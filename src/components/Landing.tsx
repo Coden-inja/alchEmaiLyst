@@ -1,5 +1,6 @@
 import React from 'react';
-import { Bot, Mail, PenTool, Shield, Zap, Users, Lock } from 'lucide-react';
+import {  Mail, PenTool, Shield, Zap, Users, Lock } from 'lucide-react';
+import Hero from './Hero';
 
 interface LandingProps {
   onGetStarted: () => void;
@@ -10,39 +11,7 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-8">
-              <div className="p-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-lg">
-                <Bot className="text-white" size={48} />
-              </div>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              AI-Powered
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Email </span>
-              Intelligence
-            </h1>
-            
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              Transform your email experience with three powerful AI agents that summarize, compose, and protect your communications automatically.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={onGetStarted}
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
-              >
-                Get Started Free
-              </button>
-              <button className="px-8 py-4 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:border-gray-400 transition-all">
-                Watch Demo
-              </button>
-            </div>
-          </div>
-        </div>
+        <Hero />
       </div>
 
       {/* Features Section */}
@@ -160,6 +129,7 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
             Join thousands of professionals who have already revolutionized their email workflow with AI.
           </p>
           <button
+          id="getstarted"
             onClick={onGetStarted}
             className="px-8 py-4 bg-white text-blue-600 font-semibold rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
           >
