@@ -1,3 +1,107 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+:root {
+  --blueShade: linear-gradient(
+    to right,
+    #dbe8f8,
+    #308dff,
+    #4974bc,
+    #2d4a75,
+    #121f29
+  );
+}
+
+@font-face {
+  font-family: "Modern Negra";
+  src: url("/fonts/Modern Negra Demo.ttf") format("truetype");
+}
+
+@theme {
+  --color-universityBlue: #31488e;
+  --color-universityLightBlue: #308dff;
+  --color-universityPink: #f3d1da;
+  --color-overlayBlack: rgba(0, 0, 0, 0.3);
+
+  --font-sans: "Mona Sans", sans-serif;
+  --font-trebuchet: 'Trebuchet MS', sans-serif;
+  --font-modern-negra: "Modern Negra", sans-serif;
+  --font-serif: "DM Serif Text", serif;
+}
+
+
+@utility text-gradient {
+  background: linear-gradient(to bottom, #ffffff, rgb(92, 114, 225));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+@layer components {
+  #about span {
+    @apply relative inline-block font-semibold text-blue-300 transition-all duration-300 ease-in-out
+            bg-gradient-to-r from-blue-600 to-blue-500 bg-[length:0%_4px] bg-left-bottom bg-no-repeat 
+            hover:bg-[length:100%_4px];
+  }
+}
+
+ul {
+  font-family:'Trebuchet MS', sans-serif;
+}
+
+.bottom-text-span {
+  font-weight: bolder;
+  font-family:'Trebuchet MS', sans-serif;
+  font-style: italic;
+  padding: 1%;
+  color: pink;
+}
+
+
+
+ .noisy {
+        @apply absolute  size-full bg-[url("/noise.png")];
+    }
+
+.clipbg {
+  background-image: url("/hero2.jpg");
+  clip-path: path(
+    "M186.203 1C176.283 1 39.2564 1.51235 19.4167 1.51235C-0.422969 1.51235 1.4458 20.613 1.4458 20.613V351.97C1.4458 351.97 0.0559231 376.554 23.6155 376.554C47.1751 376.554 436.678 376.745 466.438 376.745C496.197 376.745 496.197 375.712 496.197 390.164V536.745C496.197 559.455 513.557 560.488 513.557 560.488C513.557 560.488 1170.78 561 1199.3 561C1227.82 561 1225.31 541.907 1225.31 541.907C1225.31 541.907 1226.4 74.8769 1226.4 61.4575C1226.4 48.038 1209.19 49.5165 1209.19 49.5165C1209.19 49.5165 225.917 49.161 211.037 49.161C196.158 49.161 196.122 38.1615 196.122 38.1615V13.3872C196.122 13.3872 196.122 1 186.203 1Z"
+  );
+}
+
+.slideshow-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  clip-path: path(
+    "M186.203 1C176.283 1 39.2564 1.51235 19.4167 1.51235C-0.422969 1.51235 1.4458 20.613 1.4458 20.613V351.97C1.4458 351.97 0.0559231 376.554 23.6155 376.554C47.1751 376.554 436.678 376.745 466.438 376.745C496.197 376.745 496.197 375.712 496.197 390.164V536.745C496.197 559.455 513.557 560.488 513.557 560.488C513.557 560.488 1170.78 561 1199.3 561C1227.82 561 1225.31 541.907 1225.31 541.907C1225.31 541.907 1226.4 74.8769 1226.4 61.4575C1226.4 48.038 1209.19 49.5165 1209.19 49.5165C1209.19 49.5165 225.917 49.161 211.037 49.161C196.158 49.161 196.122 38.1615 196.122 38.1615V13.3872C196.122 13.3872 196.122 1 186.203 1Z"
+  );
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+}
+.slideshow-image.visible {
+  opacity: 1;
+}
+
+@media (min-width: 1700px) {
+  .clipbg {
+    clip-path: path(
+      "M333.291 1C315.476 1 69.3879 1.82342 33.7575 1.82342C-1.87298 1.82342 1.48317 32.521 1.48317 32.521V565.059C1.48317 565.059 -1.01292 604.568 41.2982 604.568C83.6093 604.568 783.126 604.875 836.571 604.875C890.017 604.875 890.017 603.216 890.017 626.442V862.02C890.017 898.518 921.193 900.177 921.193 900.177C921.193 900.177 2101.51 901 2152.73 901C2203.94 901 2199.43 870.315 2199.43 870.315C2199.43 870.315 2201.4 119.731 2201.4 98.1638C2201.4 76.5969 2170.48 78.9729 2170.48 78.9729C2170.48 78.9729 404.616 78.4016 377.893 78.4016C351.17 78.4016 351.107 60.7239 351.107 60.7239V20.908C351.107 20.908 351.107 1 333.291 1Z"
+    );
+  }
+}
