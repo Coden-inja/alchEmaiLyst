@@ -2,13 +2,16 @@
 
 AlchEMAIList is an intelligent, agent-powered email assistant that helps you manage your inbox with ease. It simplifies reading, replying, and spam-checking your emails using powerful **Large Language Models (LLMs)** and seamless **Gmail integration** — all presented in a beautiful, distraction-free UI. It also features robust context processing via **Alchemyst AI** for enhanced email understanding and generation.
 
---
-
+---
 ![Screenshot 2025-07-06 132530](https://github.com/user-attachments/assets/5d6d5a08-9bed-4851-a4d8-0657ae5040a6)
--
 ---
 ### Watched the demo Video here - [Click](https://x.com/Yoges_ai/status/1941754822501466365)
+---
+## 📚 Additional Documentation
 
+- 👉 For contributing guidelines, see [`docs/contributing.md`](docs/contributing.md)
+- 🧱 For a detailed project structure overview, check [`docs/project_structure.md`](docs/project_structure.md)
+---
 ## ⚡ Key Features
 
 * **✉️ Email Summarizer** – Extract key insights from any email or thread using AI.
