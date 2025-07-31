@@ -10,8 +10,11 @@ export const AuthCallback: React.FC = () => {
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [error, setError] = useState<string>('');
   const [debugInfo, setDebugInfo] = useState<any>(null);
+  const [hasHandled, setHasHandled] = useState(false);
 
   useEffect(() => {
+    if (hasHandled) {return;}
+    setHasHandled(true);
     console.log('🔥 AuthCallback useEffect is running!');
     
     const processCallback = async () => {
@@ -44,7 +47,8 @@ export const AuthCallback: React.FC = () => {
         if (!code) {
           console.error('❌ No authorization code received');
           console.log('Available URL params:', Object.fromEntries(urlParams.entries()));
-          throw new Error('No authorization code received from Google');
+          // throw new Error('No authorization code received from Google');
+          return;
         }
 
         console.log('✅ Authorization code received, exchanging for tokens...');
@@ -115,6 +119,7 @@ export const AuthCallback: React.FC = () => {
   const statusInfo = getStatusMessage();
 
   console.log('🎨 AuthCallback rendering with status:', status);
+  if (!hasHandled && status === 'processing') return null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
