@@ -1,11 +1,5 @@
 import { GoogleAuth } from 'google-auth-library';
-
-interface GoogleAuthConfig {
-  clientId: string;
-  clientSecret: string;
-  redirectUri: string;
-  scopes: string[];
-}
+import { GoogleAuthConfig, GoogleOAuthTokenResponse, GoogleUserInfo } from '../types';
 
 class GoogleAuthService {
   private config: GoogleAuthConfig;
@@ -72,7 +66,7 @@ class GoogleAuthService {
     return authUrl;
   }
 
-  async exchangeCodeForTokens(code: string): Promise<any> {
+  async exchangeCodeForTokens(code: string): Promise<GoogleOAuthTokenResponse> {
     const tokenEndpoint = 'https://oauth2.googleapis.com/token';
     
     const params = new URLSearchParams({
@@ -130,7 +124,7 @@ class GoogleAuthService {
     }
   }
 
-  async refreshAccessToken(refreshToken: string): Promise<any> {
+  async refreshAccessToken(refreshToken: string): Promise<GoogleOAuthTokenResponse> {
     const tokenEndpoint = 'https://oauth2.googleapis.com/token';
     
     const params = new URLSearchParams({
@@ -172,7 +166,7 @@ class GoogleAuthService {
     }
   }
 
-  async getUserInfo(accessToken: string): Promise<any> {
+  async getUserInfo(accessToken: string): Promise<GoogleUserInfo> {
     console.log('👤 Fetching user info...');
     
     try {
@@ -209,13 +203,13 @@ class GoogleAuthService {
     }
   }
 
-  storeTokens(tokens: any): void {
+  storeTokens(tokens: GoogleOAuthTokenResponse): void {
     console.log('💾 Storing tokens in localStorage...');
     localStorage.setItem('google_tokens', JSON.stringify(tokens));
     console.log('✅ Tokens stored successfully');
   }
 
-  getStoredTokens(): any | null {
+  getStoredTokens(): GoogleOAuthTokenResponse | null {
     const stored = localStorage.getItem('google_tokens');
     const tokens = stored ? JSON.parse(stored) : null;
     
