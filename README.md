@@ -43,11 +43,9 @@ AlchEMAIList is an intelligent, agent-powered email assistant that helps you man
 | Layer           | Tech Used                               |
 | :-------------- | :-------------------------------------- |
 | Frontend        | React, Vite, TailwindCSS, ShadCN, Lucide |
-| Backend Proxy   | Express.js + Axios                      |
 | Auth            | Google OAuth 2.0                        |
 | AI Logic        | Alchemyst AI API, Google Gemini (fallback) |
 | Email Actions   | Gmail API via OAuth Tokens              |
-| Export to Sheets |                                         |
 
 ---
 
