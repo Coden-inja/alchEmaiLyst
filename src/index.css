@@ -1,9 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
+
+/* ✅ Tailwind directives after imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
 
 html,
 body {
