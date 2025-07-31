@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGoogleAuth } from '../hooks/useGoogleAuth';
 import { Bot, CheckCircle, XCircle, Loader, AlertTriangle } from 'lucide-react';
+import { DebugInfo } from '../types';
 
 export const AuthCallback: React.FC = () => {
   console.log('🚀 AuthCallback component is rendering!');
@@ -9,9 +10,9 @@ export const AuthCallback: React.FC = () => {
   const { handleAuthCallback } = useGoogleAuth();
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [error, setError] = useState<string>('');
-  const [debugInfo, setDebugInfo] = useState<any>(null);
-  const [hasHandled, setHasHandled] = useState(false);
-
+  const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
+  const [hasHandled, setHasHandled] = useState<boolean>(false);
+  
   useEffect(() => {
     if (hasHandled) {return;}
     setHasHandled(true);
