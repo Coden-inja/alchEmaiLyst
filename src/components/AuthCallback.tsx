@@ -2,76 +2,79 @@ import React, { useEffect, useState } from 'react';
 import { useGoogleAuth } from '../hooks/useGoogleAuth';
 import { Bot, CheckCircle, XCircle, Loader, AlertTriangle } from 'lucide-react';
 
+interface DebugInfo {
+  url: string;
+  params: Record<string, string>;
+  timestamp: string;
+}
+
 export const AuthCallback: React.FC = () => {
   console.log('🚀 AuthCallback component is rendering!');
   console.log('📍 Current URL in AuthCallback:', window.location.href);
-  
+
   const { handleAuthCallback } = useGoogleAuth();
   const [status, setStatus] = useState<'processing' | 'success' | 'error'>('processing');
   const [error, setError] = useState<string>('');
-  const [debugInfo, setDebugInfo] = useState<any>(null);
-  const [hasHandled, setHasHandled] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
+  const [hasHandled, setHasHandled] = useState<boolean>(false);
 
   useEffect(() => {
-    if (hasHandled) {return;}
+    if (hasHandled) return;
+
     setHasHandled(true);
     console.log('🔥 AuthCallback useEffect is running!');
-    
+
     const processCallback = async () => {
       try {
         console.group('🔐 OAuth Callback Processing');
-        
+
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
-        const error = urlParams.get('error');
+        const errorParam = urlParams.get('error');
         const state = urlParams.get('state');
-        
-        console.log('📋 URL Parameters:', {
-          code: code ? `${code.substring(0, 20)}...` : null,
-          error,
-          state,
-          fullUrl: window.location.href
-        });
 
-        setDebugInfo({
+        const debug: DebugInfo = {
           url: window.location.href,
           params: Object.fromEntries(urlParams.entries()),
           timestamp: new Date().toISOString()
+        };
+
+        setDebugInfo(debug);
+
+        console.log('📋 URL Parameters:', {
+          code: code ? `${code.substring(0, 20)}...` : null,
+          error: errorParam,
+          state,
+          fullUrl: debug.url
         });
 
-        if (error) {
-          console.error('❌ OAuth Error from Google:', error);
-          throw new Error(`OAuth error: ${error}`);
+        if (errorParam) {
+          console.error('❌ OAuth Error from Google:', errorParam);
+          throw new Error(`OAuth error: ${errorParam}`);
         }
 
         if (!code) {
           console.error('❌ No authorization code received');
           console.log('Available URL params:', Object.fromEntries(urlParams.entries()));
-          // throw new Error('No authorization code received from Google');
           return;
         }
 
         console.log('✅ Authorization code received, exchanging for tokens...');
         await handleAuthCallback(code);
-        
+
         console.log('✅ Authentication successful, redirecting...');
         setStatus('success');
-        
-        // Clear URL parameters and redirect to dashboard
+
         setTimeout(() => {
           window.history.replaceState({}, document.title, '/');
           window.location.reload();
         }, 2000);
-        
       } catch (err) {
         console.error('❌ Auth callback error:', err);
-        console.groupEnd();
-        
         const errorMessage = err instanceof Error ? err.message : 'Authentication failed';
         setError(errorMessage);
         setStatus('error');
-        
-        // Log detailed error information
+
         console.group('🚨 Authentication Error Details');
         console.error('Error:', err);
         console.log('Debug Info:', debugInfo);
@@ -81,9 +84,8 @@ export const AuthCallback: React.FC = () => {
       }
     };
 
-    console.log('⏰ Starting processCallback function...');
     processCallback();
-  }, [handleAuthCallback]);
+  }, [debugInfo, handleAuthCallback, hasHandled]);
 
   const getStatusIcon = () => {
     switch (status) {
@@ -117,8 +119,6 @@ export const AuthCallback: React.FC = () => {
   };
 
   const statusInfo = getStatusMessage();
-
-  console.log('🎨 AuthCallback rendering with status:', status);
   if (!hasHandled && status === 'processing') return null;
 
   return (
@@ -130,19 +130,19 @@ export const AuthCallback: React.FC = () => {
               <Bot className="text-white" size={32} />
             </div>
           </div>
-          
+
           <div className="mb-6">
             {getStatusIcon()}
           </div>
-          
+
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
             {statusInfo.title}
           </h1>
-          
+
           <p className="text-gray-600 mb-6">
             {statusInfo.description}
           </p>
-          
+
           {status === 'error' && (
             <div className="space-y-4">
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-left">
@@ -176,7 +176,7 @@ export const AuthCallback: React.FC = () => {
               </div>
             </div>
           )}
-          
+
           {status === 'processing' && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-700">
@@ -192,7 +192,7 @@ export const AuthCallback: React.FC = () => {
               )}
             </div>
           )}
-          
+
           {status === 'success' && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <p className="text-sm text-green-700">

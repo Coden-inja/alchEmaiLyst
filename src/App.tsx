@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { GoogleAuthContext, useGoogleAuthProvider } from './hooks/useGoogleAuth';
 import { GoogleAuthModal } from './components/GoogleAuthModal';
 import { AuthCallback } from './components/AuthCallback';
