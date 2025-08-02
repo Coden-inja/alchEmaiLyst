@@ -19,18 +19,21 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!recipient || !subject || !content) return;
     onCompose({ recipient, subject, content, persona });
   };
 
   return (
     <div>
+      {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 bg-green-100 rounded-lg">
           <Sparkles className="text-green-600" size={20} />
         </div>
         <h3 className="text-xl font-semibold text-gray-900">AI Email Composer</h3>
       </div>
-      
+
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
@@ -42,7 +45,7 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
               type="email"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               placeholder="recipient@example.com"
               required
             />
@@ -55,7 +58,7 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
             <select
               value={persona}
               onChange={(e) => setPersona(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             >
               <option value="professional">Professional</option>
               <option value="friendly">Friendly</option>
@@ -73,7 +76,7 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             placeholder="Email subject"
             required
           />
@@ -88,7 +91,7 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
             value={content}
             onChange={(e) => setContent(e.target.value)}
             rows={6}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
             placeholder="Describe what you want to communicate in this email..."
             required
           />
@@ -97,10 +100,11 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
           </p>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:transform-none"
+          className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:pointer-events-none"
         >
           <div className="flex items-center justify-center gap-2">
             {isLoading ? (
