@@ -1,16 +1,6 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { googleAuthService } from '../services/googleAuth';
-import { User } from '../types';
-
-interface GoogleAuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: () => void;
-  logout: () => void;
-  accessToken: string | null;
-  handleAuthCallback: (code: string) => Promise<void>;
-}
+import { GoogleAuthContextType, User } from '../types';
 
 const GoogleAuthContext = createContext<GoogleAuthContextType | undefined>(undefined);
 
@@ -39,7 +29,7 @@ export const useGoogleAuthProvider = () => {
       if (tokens) {
         console.log('📱 Found stored tokens, checking validity...');
         const now = Date.now();
-        const expiresAt = tokens.expires_at || (tokens.created_at + tokens.expires_in * 1000);
+        const expiresAt = now + tokens.expires_in * 1000;
         
         console.log('⏰ Token expiry check:', {
           now: new Date(now).toISOString(),
@@ -111,7 +101,7 @@ export const useGoogleAuthProvider = () => {
       const userData: User = {
         id: userInfo.id,
         email: userInfo.email,
-        name: userInfo.name,
+        name: userInfo.name?userInfo.name:"",
         avatar: userInfo.picture,
         persona: 'Professional and friendly communication style',
       };

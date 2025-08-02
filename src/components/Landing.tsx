@@ -22,37 +22,38 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
             <p className="text-lg text-gray-600">Powered by advanced AI to revolutionize your email workflow</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center group">
-              <div className="p-6 bg-blue-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
-                <Mail className="text-blue-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Email Summarizer</h3>
-              <p className="text-gray-600">
-                Automatically extracts key insights from your emails and provides concise summaries, saving you hours of reading time.
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="p-6 bg-green-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
-                <PenTool className="text-green-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Email Composer</h3>
-              <p className="text-gray-600">
-                Crafts professional emails based on your writing style and persona, ensuring every message hits the right tone.
-              </p>
-            </div>
-            
-            <div className="text-center group">
-              <div className="p-6 bg-red-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-red-200 transition-colors">
-                <Shield className="text-red-600" size={32} />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Spam Detector</h3>
-              <p className="text-gray-600">
-                Intelligently identifies and manages spam emails, keeping your inbox clean and your data secure.
-              </p>
-            </div>
-          </div>
+         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+    <div className="p-6 bg-blue-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
+      <Mail className="text-blue-600" size={32} />
+    </div>
+    <h3 className="text-xl font-semibold text-gray-900 mb-4">Email Summarizer</h3>
+    <p className="text-gray-600">
+      Automatically extracts key insights from your emails and provides concise summaries, saving you hours of reading time.
+    </p>
+  </div>
+
+  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+    <div className="p-6 bg-green-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
+      <PenTool className="text-green-600" size={32} />
+    </div>
+    <h3 className="text-xl font-semibold text-gray-900 mb-4">Email Composer</h3>
+    <p className="text-gray-600">
+      Crafts professional emails based on your writing style and persona, ensuring every message hits the right tone.
+    </p>
+  </div>
+
+  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+    <div className="p-6 bg-red-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-red-200 transition-colors">
+      <Shield className="text-red-600" size={32} />
+    </div>
+    <h3 className="text-xl font-semibold text-gray-900 mb-4">Spam Detector</h3>
+    <p className="text-gray-600">
+      Intelligently identifies and manages spam emails, keeping your inbox clean and your data secure.
+    </p>
+  </div>
+</div>
+
         </div>
       </div>
 

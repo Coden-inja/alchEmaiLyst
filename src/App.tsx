@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { GoogleAuthContext, useGoogleAuthProvider } from './hooks/useGoogleAuth';
 import { GoogleAuthModal } from './components/GoogleAuthModal';
 import { AuthCallback } from './components/AuthCallback';
@@ -6,7 +7,6 @@ import { Landing } from './components/Landing';
 import Terms from './components/Terms';
 import Privacy from './components/Privacy';
 import Footer from './components/Footer';
-import { useState, useEffect } from 'react';
 
 function App() {
   const googleAuth = useGoogleAuthProvider();
