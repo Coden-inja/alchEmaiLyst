@@ -1,12 +1,6 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { User } from '../types';
-
-interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  isLoading: boolean;
-}
+import { AuthContextType, User } from '../types';
+import bcrypt from "bcrypt"
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -31,22 +25,25 @@ export const useAuthProvider = () => {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string):Promise<void | Error> => {
     setIsLoading(true);
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
+      const hashPassword = await bcrypt.hash(password, 10);
+
       const userData: User = {
         id: '1',
         email,
         name: email.split('@')[0],
         persona: 'Professional and friendly communication style',
+        password:hashPassword
       };
       
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
-    } catch (error) {
+    } catch {
       throw new Error('Login failed');
     } finally {
       setIsLoading(false);

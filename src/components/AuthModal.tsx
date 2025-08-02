@@ -24,6 +24,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       await login(email, password);
       onClose();
     } catch (err) {
+      console.error("Login error: ",err)
       setError('Authentication failed. Please try again.');
     }
   };

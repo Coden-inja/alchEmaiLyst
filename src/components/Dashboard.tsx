@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGoogleAuth } from '../hooks/useGoogleAuth';
 import { gmailService } from '../services/gmailService';
 import { apiService } from '../services/api';
-import { Agent, Email } from '../types';
+import { Agent, ApiError, Email } from '../types';
 import { AgentCard } from './AgentCard';
 import { EmailSummary } from './EmailSummary';
 import { ComposeEmail } from './ComposeEmail';
@@ -11,14 +11,8 @@ import { LogOut, Bot, Activity, Mail, PenTool, Shield, AlertTriangle, Settings, 
 
 type ContentView = 'summary' | 'compose' | 'spam';
 
-interface ApiError {
-  message: string;
-  type: 'config' | 'network' | 'auth' | 'general';
-  timestamp: string;
-  details?: string;
-}
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   const { user, logout, accessToken } = useGoogleAuth();
   const [agents, setAgents] = useState<Agent[]>([
     {
@@ -177,7 +171,6 @@ const Dashboard: React.FC = () => {
       }
 
     } catch (error) {
-      logError(error, 'Email Loading', { accessToken: accessToken ? 'present' : 'missing' });
       
       let errorType: ApiError['type'] = 'general';
       let errorMessage = 'Failed to load emails from Gmail.';
@@ -197,6 +190,8 @@ const Dashboard: React.FC = () => {
           errorDetails = error.stack || 'No additional details available';
         }
       }
+
+      logError(error, 'Email Loading', { accessToken: accessToken ? 'present' : 'missing' });
 
       setApiError({
         message: errorMessage,
@@ -299,7 +294,11 @@ const Dashboard: React.FC = () => {
           const response = await apiService.generateResponse(
             `Summarize this email in one concise sentence: Subject: ${email.subject}, Content: ${email.content.substring(0, 500)}`
           );
-          
+
+          if (response instanceof Error) {
+            throw new Error("Invalid response");
+          }
+
           if (response.choices && response.choices[0]) {
             const summary = response.choices[0].message.content;
             console.log(`✅ Email summarized successfully: ${summary}`);
@@ -362,6 +361,10 @@ const Dashboard: React.FC = () => {
       
       const response = await apiService.generateResponse(prompt);
       
+      if (response instanceof Error) {
+        throw new Error("Invalid response format");
+      }
+
       if (response.choices && response.choices[0]) {
         const composedEmail = response.choices[0].message.content;
         console.log('✅ Email composed successfully');
