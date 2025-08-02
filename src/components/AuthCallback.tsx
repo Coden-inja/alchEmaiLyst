@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGoogleAuth } from '../hooks/useGoogleAuth';
 import { Bot, CheckCircle, XCircle, Loader, AlertTriangle } from 'lucide-react';
+import { DebugInfo } from '../types';
 
 interface DebugInfo {
   url: string;

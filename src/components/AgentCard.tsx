@@ -4,8 +4,7 @@ import {
   Mail, 
   PenTool, 
   Shield, 
-  Play, 
-  Pause, 
+  Play,
   CheckCircle, 
   XCircle,
   Clock

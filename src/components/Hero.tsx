@@ -137,17 +137,20 @@ const Hero = () => {
       </div>
 
       {/* Bottom Banner */}
-      <div ref={bottomTextRef} className="absolute bottom-4 left-2 w-full md:w-[37%] h-[25vh] md:h-[30%] m-4 text-white flex flex-col items-center justify-center z-40">
-        <h2 className="text-[clamp(1.5rem,5vw,3.5rem)] leading-tight text-center font-extrabold uppercase w-full">
+      <div ref={bottomTextRef} 
+      className="relative md:absolute md:bottom-4 md:left-2 w-full md:w-[60%] md:flex-row-reverse p-4 text-white flex flex-col items-center justify-center text-center break-words md:text-left">
+        <div className="order-1 md:order-2 ">
+        <h2 className="text-xl md:text-2xl leading-tight font-extrabold uppercase w-full">
           Your antispam AI
         </h2>
-        <p className="ml-3 text-[10px] text-center">
+        <p className="text-xs md:text-sm  mt-2">
           A cutting-edge platform powered by a{" "}
           <span className="font-bold">three-agent AI system</span> designed to intelligently{" "}
           <span className="font-bold">summarize, compose, and send emails</span> — while actively{" "}
           <span className="font-bold">avoiding spam triggers</span> to ensure maximum delivery and clarity.
         </p>
       </div>
+    </div>
     </div>
   );
 };

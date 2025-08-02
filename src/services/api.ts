@@ -1,16 +1,8 @@
+import { ApiHealthStatus, ConfigStatus, GeminiResponse, OpenAICompatibleResponse } from "../types";
+
 const API_BASE = import.meta.env.VITE_ALCHEMYST_API_BASE;
 const API_KEY = import.meta.env.VITE_ALCHEMYST_API_KEY;
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
-interface GeminiResponse {
-  candidates: Array<{
-    content: {
-      parts: Array<{
-        text: string;
-      }>;
-    };
-  }>;
-}
 
 class ApiService {
   private baseUrl = API_BASE;
@@ -105,7 +97,7 @@ class ApiService {
     }
   }
 
-  private async callGeminiAPI(prompt: string): Promise<any> {
+  private async callGeminiAPI(prompt: string): Promise<Error|OpenAICompatibleResponse> {
     if (!this.geminiApiKey) {
       throw new Error('Gemini API key is not configured');
     }
@@ -181,28 +173,7 @@ class ApiService {
     }
   }
 
-  async addContext(data: any) {
-    console.log('📝 Adding context to API');
-    return this.request('/v1/context/add', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async searchContext(query: string, similarityThreshold = 0.8) {
-    console.log(`🔍 Searching context with query: "${query}"`);
-    return this.request('/v1/context/search', {
-      method: 'POST',
-      body: JSON.stringify({
-        query,
-        similarity_threshold: similarityThreshold,
-        minimum_similarity_threshold: 0.5,
-        scope: 'internal',
-      }),
-    });
-  }
-
-  async generateResponse(prompt: string, context?: string) {
+  async generateResponse(prompt: string, context?: string):Promise<OpenAICompatibleResponse | Error> {
     console.log(`🤖 Generating response for prompt: "${prompt.substring(0, 100)}..."`);
     
     try {
@@ -241,18 +212,6 @@ class ApiService {
     }
   }
 
-  async deleteContext(source: string) {
-    console.log(`🗑️ Deleting context for source: ${source}`);
-    return this.request('/v1/context/delete', {
-      method: 'POST',
-      body: JSON.stringify({
-        source,
-        by_doc: true,
-        by_id: false,
-      }),
-    });
-  }
-
   // Method to check if API is properly configured
   isConfigured(): boolean {
     const configured = !!(this.baseUrl && this.apiKey);
@@ -260,7 +219,7 @@ class ApiService {
     return configured;
   }
 
-  getConfigStatus(): { configured: boolean; missingVars: string[]; hasGeminiFallback: boolean } {
+  getConfigStatus(): ConfigStatus {
     const missingVars: string[] = [];
     if (!this.baseUrl) missingVars.push('VITE_ALCHEMYST_API_BASE');
     if (!this.apiKey) missingVars.push('VITE_ALCHEMYST_API_KEY');
@@ -276,7 +235,7 @@ class ApiService {
   }
 
   // Method to test API connectivity
-  async testConnection(): Promise<{ success: boolean; error?: string }> {
+  async testConnection(): Promise<ApiHealthStatus> {
     try {
       console.log('🔌 Testing API connection...');
       
@@ -298,7 +257,7 @@ class ApiService {
   }
 
   // Method to test Gemini fallback
-  async testGeminiFallback(): Promise<{ success: boolean; error?: string }> {
+  async testGeminiFallback(): Promise<ApiHealthStatus> {
     if (!this.geminiApiKey) {
       return { success: false, error: 'Gemini API key not configured' };
     }
