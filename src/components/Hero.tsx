@@ -2,11 +2,10 @@ import { useRef, useState, useEffect } from "react";
 import { navLinks } from "../../constants/index.ts";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SplitText } from "gsap/SplitText"; // ✅ Make sure this path works for you
+import { SplitText } from "gsap/SplitText"; 
 import { ArrowRight, Bot, Mail, PlayCircle, Shield } from "lucide-react";
 
-gsap.registerPlugin(SplitText); // ✅ Important step
-
+gsap.registerPlugin(SplitText); 
 const Hero = () => {
   const navRef = useRef<HTMLUListElement | null>(null);
   const heroRef = useRef(null);
@@ -124,6 +123,8 @@ const Hero = () => {
             >
               <PlayCircle />
               Watch Demo
+              <ArrowRight className="transition-transform hover:rotate-45 duration-300" />
+              {/* added similar animation effect as get satrted for free button */}
             </button>
           </div>
         </div>
