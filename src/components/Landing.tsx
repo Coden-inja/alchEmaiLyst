@@ -16,39 +16,39 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
 
       {/* Features Section */}
       <div className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Three Intelligent Agents</h2>
             <p className="text-lg text-gray-600">Powered by advanced AI to revolutionize your email workflow</p>
           </div>
           
          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl p-6 bg-gray-50 rounded-2xl hover:bg-gray-100">
     <div className="p-6 bg-blue-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition-colors">
       <Mail className="text-blue-600" size={32} />
     </div>
-    <h3 className="text-xl font-semibold text-gray-900 mb-4">Email Summarizer</h3>
-    <p className="text-gray-600">
+    <h3 className="text-xl font-semibold text-gray-900 mb-4 sm:text-lg md:text-xl">Email Summarizer</h3>
+    <p className="text-gray-600 text-sm sm:text-base px-4">
       Automatically extracts key insights from your emails and provides concise summaries, saving you hours of reading time.
     </p>
   </div>
 
-  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl p-6 bg-gray-50 rounded-2xl hover:bg-gray-100">
     <div className="p-6 bg-green-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition-colors">
       <PenTool className="text-green-600" size={32} />
     </div>
-    <h3 className="text-xl font-semibold text-gray-900 mb-4">Email Composer</h3>
-    <p className="text-gray-600">
+    <h3 className="text-xl font-semibold text-gray-900 mb-4 sm:text-lg md:text-xl">Email Composer</h3>
+    <p className="text-gray-600 text-sm sm:text-base px-4">
       Crafts professional emails based on your writing style and persona, ensuring every message hits the right tone.
     </p>
   </div>
 
-  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl">
+  <div className="text-center group transform transition duration-300 ease-in-out hover:-translate-y-2 hover:shadow-2xl p-6 bg-gray-50 rounded-2xl hover:bg-gray-100">
     <div className="p-6 bg-red-100 rounded-2xl w-20 h-20 flex items-center justify-center mx-auto mb-6 group-hover:bg-red-200 transition-colors">
       <Shield className="text-red-600" size={32} />
     </div>
-    <h3 className="text-xl font-semibold text-gray-900 mb-4">Spam Detector</h3>
-    <p className="text-gray-600">
+    <h3 className="text-xl font-semibold text-gray-900 mb-4 sm:text-lg md:text-xl">Spam Detector</h3>
+    <p className="text-gray-600 text-sm sm:text-base px-4">
       Intelligently identifies and manages spam emails, keeping your inbox clean and your data secure.
     </p>
   </div>
