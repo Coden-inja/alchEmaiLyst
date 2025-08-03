@@ -60,7 +60,7 @@ const Hero = () => {
         <ul ref={navRef} className="hidden lg:flex ml-16 gap-12 justify-end text-lg text-white z-40">
           {navLinks.map((link) => (
             <li key={link.id} className="relative group cursor-pointer">
-              <a href={`#${link.id}`} className="inline-block transition-all duration-300 group-hover:-translate-y-2">
+              <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-block transition-all duration-300 group-hover:-translate-y-2">
                 {link.title}
                 <span className="absolute left-0 -bottom-1 h-[6px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
               </a>
