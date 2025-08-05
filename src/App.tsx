@@ -4,6 +4,9 @@ import { GoogleAuthModal } from './components/GoogleAuthModal';
 import { AuthCallback } from './components/AuthCallback';
 import { Dashboard } from './components/Dashboard';
 import { Landing } from './components/Landing';
+import BackToTop from './components/BackToTop';
+
+
 
 function App(): JSX.Element {
   const googleAuth = useGoogleAuthProvider();
@@ -71,6 +74,7 @@ function App(): JSX.Element {
           isOpen={showAuthModal}
           onClose={handleCloseAuthModal}
         />
+        <BackToTop />
       </div>
     </GoogleAuthContext.Provider>
   );
