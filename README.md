@@ -208,5 +208,5 @@ Gemini fallback uses a lighter summarization prompt (can be tuned for more detai
 📬 Contact & Contributions
 Want to try it out or contribute? DM me on [LinkedIn](https://www.linkedin.com/in/yogesh-kumar-299298260/) or open an issue!
 
-📄 License
-MIT © Yogesh Kumar
+## 📄 License  
+This project is licensed under the [MIT License](LICENSE).
