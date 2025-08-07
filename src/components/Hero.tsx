@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { SplitText } from "gsap/SplitText"; 
 import { ArrowRight, Bot, Mail, PlayCircle, Shield } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle.tsx";
 
 gsap.registerPlugin(SplitText); 
 const Hero = () => {
@@ -11,6 +12,7 @@ const Hero = () => {
   const heroRef = useRef(null);
   const bottomTextRef = useRef(null);
   const clipImgRef = useRef(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const images = ["/hero2.jpg"];
   const [current, setCurrent] = useState(0);
@@ -42,30 +44,64 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-universityBlue font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-universityBlue dark:bg-gray-900 font-sans relative overflow-hidden">
       {/* Navbar */}
-      <div className="absolute top-3 left-4 flex justify-end items-center space-x-8 z-50">
+      <div className="absolute top-3 left-4 right-4 flex justify-between items-center z-50">
         <h1 ref={heroRef} className="p-2 text-white relative group text-3xl xs:text-6xl lg:text-2xl font-extrabold rounded-sm cursor-pointer z-50">
           <a href="/">alchEmaiLyst</a>
           <span className="absolute left-2 bottom-1.5 w-0 h-[5px] bg-blue-600 transition-all duration-300 group-hover:w-40"></span>
         </h1>
 
-        <button className="block lg:hidden p-2 ml-12" aria-label="Open Menu">
-          <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+        <div className="flex items-center space-x-4">
+          <ul ref={navRef} className="hidden lg:flex gap-12 text-lg text-white z-40">
+            {navLinks.map((link) => (
+              <li key={link.id} className="relative group cursor-pointer">
+                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-block transition-all duration-300 group-hover:-translate-y-2">
+                  {link.title}
+                  <span className="absolute left-0 -bottom-1 h-[6px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          
+          {/* Theme Toggle */}
+          <div className="hidden lg:block">
+            <ThemeToggle />
+          </div>
 
-        <ul ref={navRef} className="hidden lg:flex ml-16 gap-12 justify-end text-lg text-white z-40">
-          {navLinks.map((link) => (
-            <li key={link.id} className="relative group cursor-pointer">
-              <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-block transition-all duration-300 group-hover:-translate-y-2">
-                {link.title}
-                <span className="absolute left-0 -bottom-1 h-[6px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            </li>
-          ))}
-        </ul>
+          <button 
+            className="block lg:hidden p-2" 
+            aria-label="Open Menu"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+        
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute top-16 left-4 right-4 bg-black/90 backdrop-blur-md rounded-lg p-4 z-50">
+            <div className="flex flex-col space-y-4">
+              {navLinks.map((link) => (
+                <a 
+                  key={link.id} 
+                  href={link.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-white hover:text-blue-300 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.title}
+                </a>
+              ))}
+              <div className="pt-2 border-t border-gray-600">
+                <ThemeToggle />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Hero Background */}

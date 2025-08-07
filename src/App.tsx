@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GoogleAuthContext, useGoogleAuthProvider } from './hooks/useGoogleAuth';
+import { useThemeProvider } from './hooks/useTheme';
 import { GoogleAuthModal } from './components/GoogleAuthModal';
 import { AuthCallback } from './components/AuthCallback';
 import { Dashboard } from './components/Dashboard';
@@ -10,6 +11,7 @@ import BackToTop from './components/BackToTop';
 
 function App(): JSX.Element {
   const googleAuth = useGoogleAuthProvider();
+  const { value: themeValue, ThemeProviderContext } = useThemeProvider();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isAuthCallback, setIsAuthCallback] = useState(false);
 
@@ -54,29 +56,33 @@ function App(): JSX.Element {
   if (isAuthCallback) {
     console.log('🔄 Rendering AuthCallback component');
     return (
-      <GoogleAuthContext.Provider value={googleAuth}>
-        <AuthCallback />
-      </GoogleAuthContext.Provider>
+      <ThemeProviderContext.Provider value={themeValue}>
+        <GoogleAuthContext.Provider value={googleAuth}>
+          <AuthCallback />
+        </GoogleAuthContext.Provider>
+      </ThemeProviderContext.Provider>
     );
   }
 
   console.log('🏠 Rendering main app content');
   return (
-    <GoogleAuthContext.Provider value={googleAuth}>
-      <div className="min-h-screen">
-        {googleAuth.isAuthenticated ? (
-          <Dashboard />
-        ) : (
-          <Landing onGetStarted={handleGetStarted} />
-        )}
+    <ThemeProviderContext.Provider value={themeValue}>
+      <GoogleAuthContext.Provider value={googleAuth}>
+        <div className="min-h-screen bg-background text-foreground">
+          {googleAuth.isAuthenticated ? (
+            <Dashboard />
+          ) : (
+            <Landing onGetStarted={handleGetStarted} />
+          )}
 
-        <GoogleAuthModal
-          isOpen={showAuthModal}
-          onClose={handleCloseAuthModal}
-        />
-        <BackToTop />
-      </div>
-    </GoogleAuthContext.Provider>
+          <GoogleAuthModal
+            isOpen={showAuthModal}
+            onClose={handleCloseAuthModal}
+          />
+          <BackToTop />
+        </div>
+      </GoogleAuthContext.Provider>
+    </ThemeProviderContext.Provider>
   );
 }
 
