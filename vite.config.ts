@@ -1,10 +1,14 @@
-//vite.config.ts
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path'; // ✅ import 'path' to resolve aliases
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'), // ✅ Define '@' alias
+    },
+  },
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
@@ -14,8 +18,7 @@ export default defineConfig({
         target: 'https://platform-backend.getalchemystai.com',
         changeOrigin: true,
         secure: true,
-        // rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-  }
+      },
+    },
+  },
 });

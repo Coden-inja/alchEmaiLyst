@@ -26,6 +26,7 @@ const navLinks = [
   {
     id: "github",
     title: "Star on Github",
+    url:"https://github.com/Coden-inja/alchEmaiLyst"
   },
 ];
 

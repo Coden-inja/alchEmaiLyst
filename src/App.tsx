@@ -7,8 +7,9 @@ import { Landing } from './components/Landing';
 import Terms from './components/Terms';
 import Privacy from './components/Privacy';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 
-function App() {
+function App(): JSX.Element {
   const googleAuth = useGoogleAuthProvider();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isAuthCallback, setIsAuthCallback] = useState(false);
@@ -18,9 +19,10 @@ function App() {
   const isPrivacyPage = urlParams.get('policy') === '1';
 
   useEffect(() => {
-    console.log('🔍 App.tsx useEffect - Checking for OAuth callback...');
+    console.log('📍 App.tsx useEffect - Checking for OAuth callback...');
     console.log('📍 Current URL:', window.location.href);
-
+    
+    const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const error = urlParams.get('error');
 
@@ -81,11 +83,12 @@ if (pathname === '/privacy') {
         ) : (
           <Landing onGetStarted={handleGetStarted} />
         )}
-        
+
         <GoogleAuthModal
           isOpen={showAuthModal}
           onClose={handleCloseAuthModal}
         />
+        <BackToTop />
       </div>
       <Footer />
     </GoogleAuthContext.Provider>
