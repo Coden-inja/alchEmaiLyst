@@ -4,20 +4,24 @@ import { GoogleAuthModal } from './components/GoogleAuthModal';
 import { AuthCallback } from './components/AuthCallback';
 import { Dashboard } from './components/Dashboard';
 import { Landing } from './components/Landing';
+import Terms from './components/Terms';
+import Privacy from './components/Privacy';
+import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
-
-
 
 function App(): JSX.Element {
   const googleAuth = useGoogleAuthProvider();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isAuthCallback, setIsAuthCallback] = useState(false);
 
-  useEffect(() => {
-    console.log('🔍 App.tsx useEffect - Checking for OAuth callback...');
-    console.log('📍 Current URL:', window.location.href);
+  const urlParams = new URLSearchParams(window.location.search);
+  const pathname = window.location.pathname;
+  const isPrivacyPage = urlParams.get('policy') === '1';
 
-    // Check if this is an OAuth callback
+  useEffect(() => {
+    console.log('📍 App.tsx useEffect - Checking for OAuth callback...');
+    console.log('📍 Current URL:', window.location.href);
+    
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
     const error = urlParams.get('error');
@@ -36,6 +40,16 @@ function App(): JSX.Element {
     }
   }, []);
 
+if (isPrivacyPage) {
+  return <Privacy />;
+}
+if (pathname === '/terms') {
+  return <Terms />;
+}
+
+if (pathname === '/privacy') {
+  return <Privacy />;
+}
   const handleGetStarted = () => {
     setShowAuthModal(true);
   };
@@ -76,6 +90,7 @@ function App(): JSX.Element {
         />
         <BackToTop />
       </div>
+      <Footer />
     </GoogleAuthContext.Provider>
   );
 }
