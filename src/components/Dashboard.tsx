@@ -1,81 +1,66 @@
-import React, { useState, useEffect } from "react";
-import { useGoogleAuth } from "../hooks/useGoogleAuth";
-import { gmailService } from "../services/gmailService";
-import { apiService } from "../services/api";
-import { Agent, ApiError, Email } from "../types";
-import { AgentCard } from "./AgentCard";
-import { EmailSummary } from "./EmailSummary";
-import { ComposeEmail } from "./ComposeEmail";
-import { SpamDetector } from "./SpamDetector";
-import {
-  LogOut,
-  Bot,
-  Activity,
-  Mail,
-  PenTool,
-  Shield,
-  AlertTriangle,
-  Settings,
-  RefreshCw,
-  Key,
-  Zap,
-} from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { useGoogleAuth } from '../hooks/useGoogleAuth';
+import { gmailService } from '../services/gmailService';
+import { apiService } from '../services/api';
+import { Agent, ApiError, Email } from '../types';
+import { AgentCard } from './AgentCard';
+import { EmailSummary } from './EmailSummary';
+import { ComposeEmail } from './ComposeEmail';
+import { SpamDetector } from './SpamDetector';
+import { LogOut, Bot, Activity, Mail, PenTool, Shield, AlertTriangle, Settings, RefreshCw, Key, Zap } from 'lucide-react';
 
-type ContentView = "summary" | "compose" | "spam";
+type ContentView = 'summary' | 'compose' | 'spam';
+
 
 const Dashboard = () => {
   const { user, logout, accessToken } = useGoogleAuth();
   const [agents, setAgents] = useState<Agent[]>([
     {
-      id: "email-summarizer",
-      name: "Email Summarizer",
-      description:
-        "Extracts and summarizes your emails with AI-powered insights",
-      status: "idle",
-      icon: "Mail",
-      color: "bg-blue-500",
+      id: 'email-summarizer',
+      name: 'Email Summarizer',
+      description: 'Extracts and summarizes your emails with AI-powered insights',
+      status: 'idle',
+      icon: 'Mail',
+      color: 'bg-blue-500',
     },
     {
-      id: "email-composer",
-      name: "Email Composer",
-      description: "Composes professional emails based on your writing style",
-      status: "idle",
-      icon: "PenTool",
-      color: "bg-green-500",
+      id: 'email-composer',
+      name: 'Email Composer',
+      description: 'Composes professional emails based on your writing style',
+      status: 'idle',
+      icon: 'PenTool',
+      color: 'bg-green-500',
     },
     {
-      id: "spam-detector",
-      name: "Spam Detector",
-      description: "Identifies and manages spam emails automatically",
-      status: "idle",
-      icon: "Shield",
-      color: "bg-red-500",
+      id: 'spam-detector',
+      name: 'Spam Detector',
+      description: 'Identifies and manages spam emails automatically',
+      status: 'idle',
+      icon: 'Shield',
+      color: 'bg-red-500',
     },
   ]);
 
   const [emails, setEmails] = useState<Email[]>([]);
   const [spamEmails, setSpamEmails] = useState<Email[]>([]);
   const [activeAgent, setActiveAgent] = useState<string | null>(null);
-  const [activeContentView, setActiveContentView] =
-    useState<ContentView>("summary");
+  const [activeContentView, setActiveContentView] = useState<ContentView>('summary');
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState<ApiError | null>(null);
   const [isLoadingEmails, setIsLoadingEmails] = useState(false);
-
+  const [aiSubject, setAiSubject] = useState('');
+  const [aiBody, setAiBody] = useState('');
   // Check API configuration on mount
   useEffect(() => {
     const configStatus = apiService.getConfigStatus();
     if (!configStatus.configured) {
       setApiError({
         message: configStatus.hasGeminiFallback
-          ? "Primary AI service (Alchemyst) is not configured, but Gemini fallback is available."
-          : "AI service is not configured. Please add your Alchemyst AI credentials to the environment variables.",
-        type: "config",
+          ? 'Primary AI service (Alchemyst) is not configured, but Gemini fallback is available.'
+          : 'AI service is not configured. Please add your Alchemyst AI credentials to the environment variables.',
+        type: 'config',
         timestamp: new Date().toISOString(),
-        details: `Missing variables: ${configStatus.missingVars.join(", ")}${configStatus.hasGeminiFallback
-            ? ". Gemini fallback is configured and will be used."
-            : ""
-          }`,
+        details: `Missing variables: ${configStatus.missingVars.join(', ')}${configStatus.hasGeminiFallback ? '. Gemini fallback is configured and will be used.' : ''}`
       });
     }
   }, []);
@@ -93,7 +78,7 @@ const Dashboard = () => {
       timestamp,
       context,
       error: {
-        message: error?.message || "Unknown error",
+        message: error?.message || 'Unknown error',
         stack: error?.stack,
         name: error?.name,
       },
@@ -103,17 +88,17 @@ const Dashboard = () => {
     };
 
     console.group(`🚨 Error in ${context} - ${timestamp}`);
-    console.error("Error Details:", errorDetails);
-    console.error("Original Error:", error);
+    console.error('Error Details:', errorDetails);
+    console.error('Original Error:', error);
     if (additionalInfo) {
-      console.info("Additional Context:", additionalInfo);
+      console.info('Additional Context:', additionalInfo);
     }
     console.groupEnd();
   };
 
   const loadEmails = async () => {
     if (!accessToken) {
-      console.log("❌ No access token available for loading emails");
+      console.log('❌ No access token available for loading emails');
       return;
     }
 
@@ -121,42 +106,34 @@ const Dashboard = () => {
     setApiError(null);
 
     try {
-      console.log("📧 Loading emails from Gmail...");
+      console.log('📧 Loading emails from Gmail...');
 
       // Load inbox emails
       const inboxResponse = await gmailService.getInboxEmails(accessToken, 20);
 
       if (inboxResponse.messages) {
-        const emailPromises = inboxResponse.messages
-          .slice(0, 10)
-          .map(async (msg: any) => {
-            try {
-              const fullMessage = await gmailService.getMessage(
-                accessToken,
-                msg.id
-              );
-              const emailContent =
-                gmailService.extractEmailContent(fullMessage);
+        const emailPromises = inboxResponse.messages.slice(0, 10).map(async (msg: any) => {
+          try {
+            const fullMessage = await gmailService.getMessage(accessToken, msg.id);
+            const emailContent = gmailService.extractEmailContent(fullMessage);
 
-              return {
-                id: fullMessage.id,
-                from: emailContent.from,
-                to: emailContent.to,
-                subject: emailContent.subject,
-                content: emailContent.body,
-                timestamp: emailContent.date || fullMessage.internalDate,
-                isRead: !fullMessage.labelIds?.includes("UNREAD"),
-                isSpam: fullMessage.labelIds?.includes("SPAM"),
-              } as Email;
-            } catch (error) {
-              console.error(`Failed to load email ${msg.id}:`, error);
-              return null;
-            }
-          });
+            return {
+              id: fullMessage.id,
+              from: emailContent.from,
+              to: emailContent.to,
+              subject: emailContent.subject,
+              content: emailContent.body,
+              timestamp: emailContent.date || fullMessage.internalDate,
+              isRead: !fullMessage.labelIds?.includes('UNREAD'),
+              isSpam: fullMessage.labelIds?.includes('SPAM'),
+            } as Email;
+          } catch (error) {
+            console.error(`Failed to load email ${msg.id}:`, error);
+            return null;
+          }
+        });
 
-        const loadedEmails = (await Promise.all(emailPromises)).filter(
-          Boolean
-        ) as Email[];
+        const loadedEmails = (await Promise.all(emailPromises)).filter(Boolean) as Email[];
         setEmails(loadedEmails);
         console.log(`✅ Loaded ${loadedEmails.length} emails successfully`);
       }
@@ -165,75 +142,63 @@ const Dashboard = () => {
       try {
         const spamResponse = await gmailService.searchSpamEmails(accessToken);
         if (spamResponse.messages) {
-          const spamPromises = spamResponse.messages
-            .slice(0, 5)
-            .map(async (msg: any) => {
-              try {
-                const fullMessage = await gmailService.getMessage(
-                  accessToken,
-                  msg.id
-                );
-                const emailContent =
-                  gmailService.extractEmailContent(fullMessage);
+          const spamPromises = spamResponse.messages.slice(0, 5).map(async (msg: any) => {
+            try {
+              const fullMessage = await gmailService.getMessage(accessToken, msg.id);
+              const emailContent = gmailService.extractEmailContent(fullMessage);
 
-                return {
-                  id: fullMessage.id,
-                  from: emailContent.from,
-                  to: emailContent.to,
-                  subject: emailContent.subject,
-                  content: emailContent.body,
-                  timestamp: emailContent.date || fullMessage.internalDate,
-                  isSpam: true,
-                } as Email;
-              } catch (error) {
-                console.error(`Failed to load spam email ${msg.id}:`, error);
-                return null;
-              }
-            });
+              return {
+                id: fullMessage.id,
+                from: emailContent.from,
+                to: emailContent.to,
+                subject: emailContent.subject,
+                content: emailContent.body,
+                timestamp: emailContent.date || fullMessage.internalDate,
+                isSpam: true,
+              } as Email;
+            } catch (error) {
+              console.error(`Failed to load spam email ${msg.id}:`, error);
+              return null;
+            }
+          });
 
-          const loadedSpamEmails = (await Promise.all(spamPromises)).filter(
-            Boolean
-          ) as Email[];
+          const loadedSpamEmails = (await Promise.all(spamPromises)).filter(Boolean) as Email[];
           setSpamEmails(loadedSpamEmails);
           console.log(`✅ Loaded ${loadedSpamEmails.length} spam emails`);
         }
       } catch (spamError) {
-        console.warn("Failed to load spam emails:", spamError);
+        console.warn('Failed to load spam emails:', spamError);
         // Don't fail the entire operation if spam loading fails
       }
+
     } catch (error) {
-      let errorType: ApiError["type"] = "general";
-      let errorMessage = "Failed to load emails from Gmail.";
-      let errorDetails = "";
+
+      let errorType: ApiError['type'] = 'general';
+      let errorMessage = 'Failed to load emails from Gmail.';
+      let errorDetails = '';
 
       if (error instanceof Error) {
-        if (error.message.includes("401") || error.message.includes("403")) {
-          errorType = "auth";
-          errorMessage = "Gmail access denied. Please re-authenticate.";
-          errorDetails =
-            "Your Gmail access token may have expired or been revoked.";
-        } else if (
-          error.message.includes("Network error") ||
-          error.message.includes("fetch")
-        ) {
-          errorType = "network";
-          errorMessage = "Network error: Unable to connect to Gmail.";
-          errorDetails = "Please check your internet connection.";
+        if (error.message.includes('401') || error.message.includes('403')) {
+          errorType = 'auth';
+          errorMessage = 'Gmail access denied. Please re-authenticate.';
+          errorDetails = 'Your Gmail access token may have expired or been revoked.';
+        } else if (error.message.includes('Network error') || error.message.includes('fetch')) {
+          errorType = 'network';
+          errorMessage = 'Network error: Unable to connect to Gmail.';
+          errorDetails = 'Please check your internet connection.';
         } else {
           errorMessage = `Gmail API Error: ${error.message}`;
-          errorDetails = error.stack || "No additional details available";
+          errorDetails = error.stack || 'No additional details available';
         }
       }
 
-      logError(error, "Email Loading", {
-        accessToken: accessToken ? "present" : "missing",
-      });
+      logError(error, 'Email Loading', { accessToken: accessToken ? 'present' : 'missing' });
 
       setApiError({
         message: errorMessage,
         type: errorType,
         timestamp: new Date().toISOString(),
-        details: errorDetails,
+        details: errorDetails
       });
     } finally {
       setIsLoadingEmails(false);
@@ -245,72 +210,55 @@ const Dashboard = () => {
     setActiveAgent(agentId);
     setIsLoading(true);
 
-    setAgents((prev) =>
-      prev.map((agent) =>
-        agent.id === agentId
-          ? { ...agent, status: "processing" as const }
-          : agent
-      )
-    );
+    setAgents(prev => prev.map(agent =>
+      agent.id === agentId
+        ? { ...agent, status: 'processing' as const }
+        : agent
+    ));
 
     try {
       console.log(`🚀 Activating agent: ${agentId}`);
 
-      if (agentId === "email-summarizer") {
+      if (agentId === 'email-summarizer') {
         await handleEmailSummarization();
-        setActiveContentView("summary");
-      } else if (agentId === "spam-detector") {
+        setActiveContentView('summary');
+      } else if (agentId === 'spam-detector') {
         await handleSpamDetection();
-        setActiveContentView("spam");
-      } else if (agentId === "email-composer") {
-        setActiveContentView("compose");
+        setActiveContentView('spam');
+      } else if (agentId === 'email-composer') {
+        setActiveContentView('compose');
       }
 
-      setAgents((prev) =>
-        prev.map((agent) =>
-          agent.id === agentId
-            ? {
-              ...agent,
-              status: "completed" as const,
-              lastActivity: new Date().toLocaleString(),
-            }
-            : agent
-        )
-      );
+      setAgents(prev => prev.map(agent =>
+        agent.id === agentId
+          ? { ...agent, status: 'completed' as const, lastActivity: new Date().toLocaleString() }
+          : agent
+      ));
 
       console.log(`✅ Agent ${agentId} activated successfully`);
     } catch (error) {
-      logError(error, "Agent Activation", { agentId, user: user?.email });
+      logError(error, 'Agent Activation', { agentId, user: user?.email });
 
-      let errorType: ApiError["type"] = "general";
-      let errorMessage =
-        "An unexpected error occurred while processing your request.";
-      let errorDetails = "";
+      let errorType: ApiError['type'] = 'general';
+      let errorMessage = 'An unexpected error occurred while processing your request.';
+      let errorDetails = '';
 
       if (error instanceof Error) {
-        if (error.message.includes("AI services unavailable")) {
-          errorType = "network";
-          errorMessage =
-            "Both primary and fallback AI services are currently unavailable.";
-          errorDetails =
-            "Please try again later or check your internet connection.";
-        } else if (
-          error.message.includes("Network error") ||
-          error.message.includes("fetch")
-        ) {
-          errorType = "network";
-          errorMessage = "Network error: Unable to connect to the AI service.";
-          errorDetails = "Please check your internet connection and try again.";
-        } else if (
-          error.message.includes("401") ||
-          error.message.includes("403")
-        ) {
-          errorType = "auth";
-          errorMessage = "Authentication error: AI service access denied.";
-          errorDetails = "Please check your API configuration.";
+        if (error.message.includes('AI services unavailable')) {
+          errorType = 'network';
+          errorMessage = 'Both primary and fallback AI services are currently unavailable.';
+          errorDetails = 'Please try again later or check your internet connection.';
+        } else if (error.message.includes('Network error') || error.message.includes('fetch')) {
+          errorType = 'network';
+          errorMessage = 'Network error: Unable to connect to the AI service.';
+          errorDetails = 'Please check your internet connection and try again.';
+        } else if (error.message.includes('401') || error.message.includes('403')) {
+          errorType = 'auth';
+          errorMessage = 'Authentication error: AI service access denied.';
+          errorDetails = 'Please check your API configuration.';
         } else {
           errorMessage = `AI Service Error: ${error.message}`;
-          errorDetails = error.stack || "No additional details available";
+          errorDetails = error.stack || 'No additional details available';
         }
       }
 
@@ -318,14 +266,14 @@ const Dashboard = () => {
         message: errorMessage,
         type: errorType,
         timestamp: new Date().toISOString(),
-        details: errorDetails,
+        details: errorDetails
       });
 
-      setAgents((prev) =>
-        prev.map((agent) =>
-          agent.id === agentId ? { ...agent, status: "error" as const } : agent
-        )
-      );
+      setAgents(prev => prev.map(agent =>
+        agent.id === agentId
+          ? { ...agent, status: 'error' as const }
+          : agent
+      ));
     } finally {
       setIsLoading(false);
       setActiveAgent(null);
@@ -333,21 +281,19 @@ const Dashboard = () => {
   };
 
   const handleEmailSummarization = async () => {
-    console.log("📧 Starting email summarization...");
+    console.log('📧 Starting email summarization...');
 
     if (emails.length === 0) {
-      console.log("ℹ️ No emails available for summarization");
+      console.log('ℹ️ No emails available for summarization');
       return;
     }
 
-    for (const email of emails.slice(0, 5)) {
-      // Limit to first 5 emails
+    for (const email of emails.slice(0, 5)) { // Limit to first 5 emails
       if (!email.summary) {
         try {
           console.log(`📝 Summarizing email: ${email.subject}`);
           const response = await apiService.generateResponse(
-            `Summarize this email in one concise sentence: Subject: ${email.subject
-            }, Content: ${email.content.substring(0, 500)}`
+            `Summarize this email in one concise sentence: Subject: ${email.subject}, Content: ${email.content.substring(0, 500)}`
           );
 
           if (response instanceof Error) {
@@ -357,122 +303,106 @@ const Dashboard = () => {
           if (response.choices && response.choices[0]) {
             const summary = response.choices[0].message.content;
             console.log(`✅ Email summarized successfully: ${summary}`);
-            setEmails((prev) =>
-              prev.map((e) => (e.id === email.id ? { ...e, summary } : e))
-            );
+            setEmails(prev => prev.map(e =>
+              e.id === email.id ? { ...e, summary } : e
+            ));
           } else {
-            console.warn("⚠️ No response choices received from API");
-            throw new Error("Invalid response format from API");
+            console.warn('⚠️ No response choices received from API');
+            throw new Error('Invalid response format from API');
           }
         } catch (error) {
-          logError(error, "Email Summarization", {
-            emailId: email.id,
-            subject: email.subject,
-          });
+          logError(error, 'Email Summarization', { emailId: email.id, subject: email.subject });
           throw error;
         }
       }
     }
-    console.log("✅ Email summarization completed successfully");
+    console.log('✅ Email summarization completed successfully');
   };
 
   const handleSpamDetection = async () => {
-    console.log("🛡️ Starting spam detection...");
+    console.log('🛡️ Starting spam detection...');
 
     if (emails.length === 0) {
-      console.log("ℹ️ No emails available for spam detection");
+      console.log('ℹ️ No emails available for spam detection');
       return;
     }
 
     // Simulate spam detection processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("✅ Spam detection completed");
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    console.log('✅ Spam detection completed');
   };
 
-// Convert plain text with \n to HTML paragraphs
-const convertToHTML = (text: string) => {
-  return text
-    .split(/\n{2,}/) // Split paragraphs
-    .map(p => `<p>${p.trim()}</p>`)
-    .join("");
-};
-
-const handleEmailComposition = async (data: {
-  recipient: string;
-  subject: string;
-  content: string;
-  persona: string;
-}) => {
-  if (!accessToken) {
-    setApiError({
-      message: "Gmail access required for sending emails.",
-      type: "auth",
-      timestamp: new Date().toISOString(),
-      details: "Please ensure you are authenticated with Gmail.",
-    });
-    return;
-  }
-
-  setApiError(null);
-  setIsLoading(true);
-
-  try {
-    console.log("✍️ Composing professional email with AI...");
-
-    const prompt = `Compose a ${data.persona} email for the following details and return strictly JSON (no markdown, no code blocks):
-{
-  "subject": "Professional concise subject based on context",
-  "body": "Polished email with multiple paragraphs separated by double newlines (\\n\\n)"
-}
-
-Recipient: ${data.recipient}
-Subject idea: ${data.subject}
-Content brief: ${data.content}
-Ensure professional tone and polite closing.`;
-
-    const response = await apiService.generateResponse(prompt);
-
-    if (response instanceof Error) throw new Error("Invalid response format");
-
-    let aiOutput = response.choices?.[0]?.message.content.trim() || "";
-
-    if (aiOutput.startsWith("```")) {
-      aiOutput = aiOutput.replace(/```(json)?/gi, "").replace(/```$/, "").trim();
-    }
-
-    let emailData: { subject: string; body: string };
+  const handleEmailComposition = async (data: {
+    recipient: string;
+    subject: string;
+    content: string;
+    persona: string;
+  }) => {
+    setIsLoading(true);
     try {
-      emailData = JSON.parse(aiOutput);
-    } catch (e) {
-      console.warn("AI returned non-JSON output, using fallback.");
-      emailData = { subject: data.subject, body: aiOutput };
+      // Step 1: Generate Subject Line only
+      const subjectPrompt = `Generate a highly professional subject line for an email based on the following details:
+
+Persona: ${data.persona}
+Content Brief: ${data.content}
+
+Respond only with the subject line, no labels.`;
+
+      const subjectResponse = await apiService.generateResponse(subjectPrompt);
+
+      if (subjectResponse instanceof Error) throw subjectResponse;
+
+      const subject = subjectResponse?.choices?.[0]?.message?.content?.trim() || data.subject;
+
+      // Step 2: Generate Email Body using subject and more professional formatting
+      const bodyPrompt = `Write a professional and polished email with the following details:
+
+Persona: ${data.persona}
+Recipient: ${data.recipient}
+Subject: ${subject}
+Content Brief: ${data.content}
+
+Add additional sentences, enhance the tone for extra professionalism, and use proper paragraph breaks for readability.
+
+Respond only with the email body.`;
+
+      const bodyResponse = await apiService.generateResponse(bodyPrompt);
+
+      if (bodyResponse instanceof Error) throw bodyResponse;
+
+      const body = bodyResponse?.choices?.[0]?.message?.content?.trim() || 'Could not parse body';
+
+      // Debug logs
+      console.log('AI-generated email:', { subject, body });
+
+      // Set in UI
+      setAiSubject(subject);
+      setAiBody(body);
+    } catch (err) {
+      console.error('AI email composition failed:', err);
+    } finally {
+      setIsLoading(false);
     }
-
-    // Convert plain text to HTML for Gmail
-    const htmlBody = convertToHTML(emailData.body);
-
-    await gmailService.sendMessage(accessToken, {
-      to: data.recipient,
-      subject: emailData.subject,
-      body: htmlBody,
-    });
-
-    alert("Email sent successfully!");
-  } catch (error) {
-    logError(error, "Email Composition", { compositionData: data });
-    setApiError({
-      message: "Failed to compose email.",
-      type: "general",
-      timestamp: new Date().toISOString(),
-      details: error instanceof Error ? error.message : "Unknown error",
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
 
-
+  const handleSendEmail = async ({ recipient, subject, body }: { recipient: string; subject: string; body: string }) => {
+    if (!accessToken) {
+      alert("No access token available. Please log in again.");
+      return;
+    }
+    try {
+      await gmailService.sendMessage(accessToken, {
+        to: recipient,
+        subject,
+        body,
+      });
+      alert("Email sent!");
+    } catch (err) {
+      alert("Failed to send email.");
+      console.error(err);
+    }
+  };
 
   const handleDeleteSpam = async (emailId: string) => {
     if (!accessToken) return;
@@ -480,23 +410,21 @@ Ensure professional tone and polite closing.`;
     try {
       console.log(`🗑️ Deleting spam email: ${emailId}`);
       await gmailService.deleteMessages(accessToken, [emailId]);
-      setSpamEmails((prev) => prev.filter((email) => email.id !== emailId));
-      console.log("✅ Spam email deleted successfully");
+      setSpamEmails(prev => prev.filter(email => email.id !== emailId));
+      console.log('✅ Spam email deleted successfully');
     } catch (error) {
-      console.error("Failed to delete spam email:", error);
+      console.error('Failed to delete spam email:', error);
 
       // Check if it's a permission error
-      if (error instanceof Error && error.message.includes("403")) {
+      if (error instanceof Error && error.message.includes('403')) {
         setApiError({
-          message:
-            "Insufficient permissions to delete emails. Please re-authenticate with full permissions.",
-          type: "auth",
+          message: 'Insufficient permissions to delete emails. Please re-authenticate with full permissions.',
+          type: 'auth',
           timestamp: new Date().toISOString(),
-          details:
-            "Your current authentication token does not have the required scope to delete emails. Please log out and log back in to grant the necessary permissions.",
+          details: 'Your current authentication token does not have the required scope to delete emails. Please log out and log back in to grant the necessary permissions.'
         });
       } else {
-        alert("Failed to delete email. Please try again.");
+        alert('Failed to delete email. Please try again.');
       }
     }
   };
@@ -506,22 +434,22 @@ Ensure professional tone and polite closing.`;
   };
 
   const dismissError = () => {
-    console.log("❌ Dismissing error");
+    console.log('❌ Dismissing error');
     setApiError(null);
   };
 
   const handleForceReauth = () => {
-    console.log("🔄 Forcing re-authentication for updated permissions...");
+    console.log('🔄 Forcing re-authentication for updated permissions...');
     logout(); // This will clear tokens and redirect to auth
   };
 
   const getErrorIcon = (type: string) => {
     switch (type) {
-      case "config":
+      case 'config':
         return Settings;
-      case "network":
+      case 'network':
         return AlertTriangle;
-      case "auth":
+      case 'auth':
         return Shield;
       default:
         return AlertTriangle;
@@ -529,9 +457,9 @@ Ensure professional tone and polite closing.`;
   };
 
   const tabs = [
-    { id: "summary" as ContentView, label: "Email Summaries", icon: Mail },
-    { id: "compose" as ContentView, label: "Compose Email", icon: PenTool },
-    { id: "spam" as ContentView, label: "Spam Detection", icon: Shield },
+    { id: 'summary' as ContentView, label: 'Email Summaries', icon: Mail },
+    { id: 'compose' as ContentView, label: 'Compose Email', icon: PenTool },
+    { id: 'spam' as ContentView, label: 'Spam Detection', icon: Shield },
   ];
 
   return (
@@ -544,9 +472,7 @@ Ensure professional tone and polite closing.`;
               <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
                 <Bot className="text-white" size={24} />
               </div>
-              <h1 className="text-xl font-bold text-gray-900">
-                AI Email Platform
-              </h1>
+              <h1 className="text-xl font-bold text-gray-900">AI Email Platform</h1>
             </div>
 
             <div className="flex items-center gap-4">
@@ -555,17 +481,11 @@ Ensure professional tone and polite closing.`;
                 disabled={isLoadingEmails}
                 className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
               >
-                <RefreshCw
-                  size={16}
-                  className={isLoadingEmails ? "animate-spin" : ""}
-                />
-                {isLoadingEmails ? "Loading..." : "Refresh"}
+                <RefreshCw size={16} className={isLoadingEmails ? 'animate-spin' : ''} />
+                {isLoadingEmails ? 'Loading...' : 'Refresh'}
               </button>
               <div className="flex items-center gap-2">
-                <Activity
-                  size={16}
-                  className={apiError ? "text-red-500" : "text-green-500"}
-                />
+                <Activity size={16} className={apiError ? "text-red-500" : "text-green-500"} />
                 <span className="text-sm text-gray-600">
                   {apiError ? "Error" : "Connected"}
                 </span>
@@ -585,9 +505,7 @@ Ensure professional tone and polite closing.`;
                       className="w-8 h-8 rounded-full"
                     />
                   )}
-                  <span className="text-sm text-gray-700">
-                    Welcome, {user?.name}
-                  </span>
+                  <span className="text-sm text-gray-700">Welcome, {user?.name}</span>
                 </div>
                 <button
                   onClick={logout}
@@ -610,34 +528,30 @@ Ensure professional tone and polite closing.`;
             <div className="flex items-start gap-3">
               {React.createElement(getErrorIcon(apiError.type), {
                 size: 20,
-                className: "text-red-600 mt-0.5 flex-shrink-0",
+                className: "text-red-600 mt-0.5 flex-shrink-0"
               })}
               <div className="flex-1">
                 <h3 className="text-sm font-medium text-red-800 mb-1">
-                  {apiError.type === "config" && "Configuration Notice"}
-                  {apiError.type === "network" && "Network Error"}
-                  {apiError.type === "auth" && "Authentication Error"}
-                  {apiError.type === "general" && "Error"}
+                  {apiError.type === 'config' && 'Configuration Notice'}
+                  {apiError.type === 'network' && 'Network Error'}
+                  {apiError.type === 'auth' && 'Authentication Error'}
+                  {apiError.type === 'general' && 'Error'}
                 </h3>
                 <p className="text-sm text-red-700 mb-2">{apiError.message}</p>
                 {apiError.details && (
-                  <p className="text-xs text-red-600 mb-2">
-                    {apiError.details}
-                  </p>
+                  <p className="text-xs text-red-600 mb-2">{apiError.details}</p>
                 )}
-                {apiError.type === "auth" &&
-                  apiError.message.includes("permissions") && (
-                    <button
-                      onClick={handleForceReauth}
-                      className="flex items-center gap-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
-                    >
-                      <Key size={12} />
-                      Re-authenticate with Full Permissions
-                    </button>
-                  )}
+                {apiError.type === 'auth' && apiError.message.includes('permissions') && (
+                  <button
+                    onClick={handleForceReauth}
+                    className="flex items-center gap-2 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
+                  >
+                    <Key size={12} />
+                    Re-authenticate with Full Permissions
+                  </button>
+                )}
                 <p className="text-xs text-red-500 mt-2">
-                  Error occurred at:{" "}
-                  {new Date(apiError.timestamp).toLocaleString()}
+                  Error occurred at: {new Date(apiError.timestamp).toLocaleString()}
                 </p>
               </div>
               <button
@@ -676,15 +590,13 @@ Ensure professional tone and polite closing.`;
                     key={tab.id}
                     onClick={() => setActiveContentView(tab.id)}
                     className={`group inline-flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-all ${activeContentView === tab.id
-                        ? "border-blue-500 text-blue-600"
-                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                       }`}
                   >
                     <IconComponent
                       size={18}
-                      className={`transition-colors ${activeContentView === tab.id
-                          ? "text-blue-600"
-                          : "text-gray-400 group-hover:text-gray-600"
+                      className={`transition-colors ${activeContentView === tab.id ? 'text-blue-600' : 'text-gray-400 group-hover:text-gray-600'
                         }`}
                     />
                     {tab.label}
@@ -697,7 +609,7 @@ Ensure professional tone and polite closing.`;
 
         {/* Content Area */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          {activeContentView === "summary" && (
+          {activeContentView === 'summary' && (
             <EmailSummary
               emails={emails}
               onRefresh={handleRefreshEmails}
@@ -705,14 +617,17 @@ Ensure professional tone and polite closing.`;
             />
           )}
 
-          {activeContentView === "compose" && (
+          {activeContentView === 'compose' && (
             <ComposeEmail
               onCompose={handleEmailComposition}
               isLoading={isLoading}
+              subjectFromAI={aiSubject}
+              bodyFromAI={aiBody}
+              onSendEmail={handleSendEmail}
             />
           )}
 
-          {activeContentView === "spam" && (
+          {activeContentView === 'spam' && (
             <SpamDetector
               spamEmails={spamEmails}
               onDeleteSpam={handleDeleteSpam}
