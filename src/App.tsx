@@ -6,6 +6,7 @@ import { AuthCallback } from './components/AuthCallback';
 import { Dashboard } from './components/Dashboard';
 import { Landing } from './components/Landing';
 import BackToTop from './components/BackToTop';
+import Footer from './components/Footer';
 
 
 
@@ -81,6 +82,7 @@ function App(): JSX.Element {
           />
           <BackToTop />
         </div>
+        <Footer />
       </GoogleAuthContext.Provider>
     </ThemeProviderContext.Provider>
   );
