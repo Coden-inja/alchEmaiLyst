@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Send, User, FileText, Sparkles } from 'lucide-react';
 
 interface ComposeEmailProps {
@@ -9,13 +9,27 @@ interface ComposeEmailProps {
     persona: string;
   }) => void;
   isLoading: boolean;
+  subjectFromAI?: string;
+  bodyFromAI?: string;
+  onSendEmail: (email: { recipient: string; subject: string; body: string }) => void;
 }
 
-export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading }) => {
+export const ComposeEmail: React.FC<ComposeEmailProps> = ({
+  onCompose,
+  isLoading,
+  subjectFromAI,
+  bodyFromAI,
+  onSendEmail,
+}) => {
   const [recipient, setRecipient] = useState('');
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [persona, setPersona] = useState('professional');
+useEffect(() => {
+  if (subjectFromAI) setSubject(subjectFromAI);
+  if (bodyFromAI) setContent(bodyFromAI);
+}, [subjectFromAI, bodyFromAI]);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,9 +66,7 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Writing Style
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Writing Style</label>
             <select
               value={persona}
               onChange={(e) => setPersona(e.target.value)}
@@ -69,9 +81,7 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Subject
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
           <input
             type="text"
             value={subject}
@@ -100,9 +110,10 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
           </p>
         </div>
 
-        {/* Submit Button */}
+        {/* Compose with AI */}
         <button
-          type="submit"
+          type="button"
+          onClick={handleSubmit}
           disabled={isLoading}
           className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:from-green-700 hover:to-blue-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:pointer-events-none"
         >
@@ -114,6 +125,16 @@ export const ComposeEmail: React.FC<ComposeEmailProps> = ({ onCompose, isLoading
             )}
             {isLoading ? 'Composing with AI...' : 'Compose Email with AI'}
           </div>
+        </button>
+
+        {/* Send Email Button */}
+        <button
+          type="button"
+          disabled={isLoading}
+          onClick={() => onSendEmail({ recipient, subject, body: content })}
+          className="w-full mt-4 bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:pointer-events-none"
+        >
+          Send Email
         </button>
       </form>
     </div>
