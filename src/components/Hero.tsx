@@ -56,10 +56,31 @@ const Hero = () => {
           <ul ref={navRef} className="hidden lg:flex gap-12 text-lg text-white z-40">
             {navLinks.map((link) => (
               <li key={link.id} className="relative group cursor-pointer">
-                <a key={link.id} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-block transition-all duration-300 group-hover:-translate-y-2">
-                  {link.title}
-                  <span className="absolute left-0 -bottom-1 h-[6px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                {link.url ? (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block transition-all duration-300 group-hover:-translate-y-2"
+                  >
+                    {link.title}
+                    <span className="absolute left-0 -bottom-1 h-[6px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                ) : (
+                  <button
+                    className="inline-block transition-all duration-300 group-hover:-translate-y-2 bg-transparent border-none outline-none text-inherit cursor-pointer"
+                    onClick={() => {
+                      if (link.anchor) {
+                        const el = document.getElementById(link.anchor);
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                  >
+                    {link.title}
+                    <span className="absolute left-0 -bottom-1 h-[6px] w-0 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -85,16 +106,32 @@ const Hero = () => {
           <div className="lg:hidden absolute top-16 left-4 right-4 bg-black/90 backdrop-blur-md rounded-lg p-4 z-50">
             <div className="flex flex-col space-y-4">
               {navLinks.map((link) => (
-                <a 
-                  key={link.id} 
-                  href={link.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-white hover:text-blue-300 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.title}
-                </a>
+                link.url ? (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white hover:text-blue-300 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.title}
+                  </a>
+                ) : (
+                  <button
+                    key={link.id}
+                    className="text-white hover:text-blue-300 transition-colors bg-transparent border-none outline-none text-inherit cursor-pointer text-left"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      if (link.anchor) {
+                        const el = document.getElementById(link.anchor);
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                  >
+                    {link.title}
+                  </button>
+                )
               ))}
               <div className="pt-2 border-t border-gray-600">
                 <ThemeToggle />

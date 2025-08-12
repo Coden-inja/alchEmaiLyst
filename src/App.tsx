@@ -9,7 +9,7 @@ import Terms from './components/Terms';
 import Privacy from './components/Privacy';
 import Footer from './components/Footer';
 import BackToTop from './components/BackToTop';
-import Footer from './components/Footer';
+
 
 function App(): JSX.Element {
   const googleAuth = useGoogleAuthProvider();
