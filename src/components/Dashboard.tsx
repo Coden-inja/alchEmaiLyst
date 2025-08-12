@@ -7,6 +7,7 @@ import { AgentCard } from './AgentCard';
 import { EmailSummary } from './EmailSummary';
 import { ComposeEmail } from './ComposeEmail';
 import { SpamDetector } from './SpamDetector';
+import { ThemeToggle } from './ThemeToggle';
 import { LogOut, Bot, Activity, Mail, PenTool, Shield, AlertTriangle, Settings, RefreshCw, Key, Zap } from 'lucide-react';
 
 type ContentView = 'summary' | 'compose' | 'spam';
@@ -463,39 +464,40 @@ Respond only with the email body.`;
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
                 <Bot className="text-white" size={24} />
               </div>
-              <h1 className="text-xl font-bold text-gray-900">AI Email Platform</h1>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">AI Email Platform</h1>
             </div>
 
             <div className="flex items-center gap-4">
               <button
                 onClick={handleRefreshEmails}
                 disabled={isLoadingEmails}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors disabled:opacity-50"
               >
                 <RefreshCw size={16} className={isLoadingEmails ? 'animate-spin' : ''} />
                 {isLoadingEmails ? 'Loading...' : 'Refresh'}
               </button>
               <div className="flex items-center gap-2">
                 <Activity size={16} className={apiError ? "text-red-500" : "text-green-500"} />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-300">
                   {apiError ? "Error" : "Connected"}
                 </span>
                 {apiService.getConfigStatus().hasGeminiFallback && (
-                  <div className="flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
+                  <div className="flex items-center gap-1 px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-full text-xs">
                     <Zap size={12} />
                     Gemini Backup
                   </div>
                 )}
               </div>
+              <ThemeToggle />
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
                   {user?.avatar && (
@@ -505,7 +507,7 @@ Respond only with the email body.`;
                       className="w-8 h-8 rounded-full"
                     />
                   )}
-                  <span className="text-sm text-gray-700">Welcome, {user?.name}</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">Welcome, {user?.name}</span>
                 </div>
                 <button
                   onClick={logout}
