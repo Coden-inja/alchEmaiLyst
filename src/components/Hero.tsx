@@ -203,11 +203,7 @@ const Hero = () => {
         </div>
 
         {/* Top Description Text */}
-        <div className="absolute bottom-12 right-2 w-full justify-end flex z-30">
-          <h2 className="text-white bg-blue-400/20 text-sm font-mono p-2 rounded-lg max-w-xl">
-            A three agent system for leveraging AI to summarise, compose, send emails. Also stay away from spam{" "}
-          </h2>
-        </div>
+       
       </div>
 
       {/* Bottom Banner */}
