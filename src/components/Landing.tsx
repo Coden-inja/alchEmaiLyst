@@ -139,7 +139,14 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
                 <li>Team Management</li>
                 <li>Dedicated Support</li>
               </ul>
-              <button className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">Contact Us</button>
+              <a
+                href="https://www.linkedin.com/in/yogesh-kumar-299298260/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+              >
+                Contact Us
+              </a>
             </div>
           </div>
         </div>
