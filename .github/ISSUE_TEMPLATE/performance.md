@@ -1,8 +1,8 @@
 ---
-name: ⚡ Performance Optimization
+name: "⚡ Performance Optimization"
 about: Report performance issues or suggest optimizations
-title: '[PERF] '
-labels: 'performance, optimization'
+title: "[PERF] "
+labels: ''
 assignees: ''
 
 ---
@@ -164,4 +164,4 @@ Please fill this out if you checked the SSOC participation box above.
 - [ ] I have identified the specific performance bottleneck
 - [ ] I have provided baseline performance measurements
 - [ ] I have proposed a clear optimization strategy
-- [ ] I have considered potential risks and mitigation 
+- [ ] I have considered potential risks and mitigation

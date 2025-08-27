@@ -1,8 +1,8 @@
 ---
-name: 📚 Documentation
+name: "\U0001F4DA Documentation"
 about: Improve documentation, tutorials, or educational content
-title: '[DOCS] '
-labels: 'documentation, good-first-issue'
+title: "[DOCS] "
+labels: documentation
 assignees: ''
 
 ---
@@ -59,13 +59,45 @@ Please fill this out if you checked the SSOC participation box above.
 -->
 
 <details>
-<summary>🏆 SSOC Season 4 Details (Click to expand if participating in SSOC)</summary>
+<summary>🏆 GSSOC 2025 Details (Click to expand if participating in GSSOC)</summary>
 
-### SSOC Information
+### GSSOC Information
 **Difficulty Level:**
-- [ ] 🟢 Beginner (20 points) - Basic documentation, README updates
-- [ ] 🟡 Intermediate (30 points) - Comprehensive guides, tutorials
-- [ ] 🔴 Advanced (40 points) - Technical documentation, API docs
+- [ ] 🟢 Beginner (3 points) - Basic documentation, README updates
+- [ ] 🟡 Intermediate (7 points) - Comprehensive guides, tutorials
+- [ ] 🔴 Advanced (10 points) - Technical documentation, API docs
+
+**Estimated Time:** [e.g., 1-2 days, 3-5 days, 1 week]
+
+**Skills Required:**
+- [ ] Technical writing
+- [ ] Markdown
+- [ ] Algorithm knowledge
+- [ ] React/JavaScript (for code docs)
+- [ ] Design (for diagrams/screenshots)
+- [ ] Video editing (for tutorials)
+
+**Documentation Plan:**
+- **Research Phase**: [Gathering information and requirements]
+- **Writing Phase**: [Creating content and examples]
+- **Review Phase**: [Proofreading and technical accuracy]
+- **Polish Phase**: [Final formatting and publication]
+
+**Mentorship:**
+- [ ] I can provide guidance for this documentation
+- [ ] I need mentorship for this documentation
+- [ ] This can be completed independently
+
+</details>
+
+<details>
+<summary>🏆 OSCI 2025 Details (Click to expand if participating in OSCI)</summary>
+
+### OSCI Information
+**Difficulty Level:**
+- [ ] 🟢 Beginner (5 points) - Basic documentation, README updates
+- [ ] 🟡 Intermediate (10 points) - Comprehensive guides, tutorials
+- [ ] 🔴 Advanced (15 points) - Technical documentation, API docs
 
 **Estimated Time:** [e.g., 1-2 days, 3-5 days, 1 week]
 
@@ -106,4 +138,4 @@ Please fill this out if you checked the SSOC participation box above.
 ## ✅ Checklist
 - [ ] I have identified the specific documentation gap
 - [ ] I have considered the target audience
-- [ ] I have outlined the proposed content structure 
+- [ ] I have outlined the proposed content structure
