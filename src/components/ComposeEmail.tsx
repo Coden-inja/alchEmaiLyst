@@ -1,38 +1,56 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { isValidEmail } from "@/lib/utils";
 
-export default function ComposeEmail() {
-  const [to, setTo] = useState<string>("");
-  const [error, setError] = useState<string>("");
+interface Props {
+  onCompose: (data: { recipient: string; subject: string; content: string; persona: string }) => void;
+}
 
-  const handleSend = () => {
-    if (!isValidEmail(to)) {
-      setError("❌ Please enter a valid email address");
+const ComposeEmail: React.FC<Props> = ({ onCompose }) => {
+  const [recipient, setRecipient] = useState("");
+  const [subject, setSubject] = useState("");
+  const [content, setContent] = useState("");
+  const [persona, setPersona] = useState("default");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!isValidEmail(recipient)) {
+      alert("❌ Please enter a valid email address");
       return;
     }
 
-    setError("");
-    console.log("Sending email to:", to);
-    // TODO: call API to send email
+    if (!recipient || !subject || !content) return;
+
+    onCompose({ recipient, subject, content, persona });
   };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit} className="space-y-4">
       <input
-        type="email"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
+        type="text"
         placeholder="Recipient Email"
-        className="border p-2 rounded w-full"
+        value={recipient}
+        onChange={(e) => setRecipient(e.target.value)}
+        className="border p-2 w-full"
       />
-      {error && <p className="text-red-500">{error}</p>}
-
-      <button
-        onClick={handleSend}
-        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-      >
+      <input
+        type="text"
+        placeholder="Subject"
+        value={subject}
+        onChange={(e) => setSubject(e.target.value)}
+        className="border p-2 w-full"
+      />
+      <textarea
+        placeholder="Compose your email..."
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        className="border p-2 w-full"
+      />
+      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
         Send
       </button>
-    </div>
+    </form>
   );
-}
+};
+
+export default ComposeEmail;
