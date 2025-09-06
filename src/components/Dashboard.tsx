@@ -466,28 +466,28 @@ Respond only with the email body.`;
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <header className="bg-background text-foreground shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg">
                 <Bot className="text-white" size={24} />
               </div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">AI Email Platform</h1>
+              <h1 className="text-xl font-bold">AI Email Platform</h1>
             </div>
 
             <div className="flex items-center gap-4">
               <button
                 onClick={handleRefreshEmails}
                 disabled={isLoadingEmails}
-                className="flex items-center gap-2 px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors disabled:opacity-50"
+                className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
               >
                 <RefreshCw size={16} className={isLoadingEmails ? 'animate-spin' : ''} />
                 {isLoadingEmails ? 'Loading...' : 'Refresh'}
               </button>
               <div className="flex items-center gap-2">
                 <Activity size={16} className={apiError ? "text-red-500" : "text-green-500"} />
-                <span className="text-sm text-gray-600 dark:text-gray-300">
+                <span className="text-sm text-muted-foreground">
                   {apiError ? "Error" : "Connected"}
                 </span>
                 {apiService.getConfigStatus().hasGeminiFallback && (
