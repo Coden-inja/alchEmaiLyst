@@ -1,3 +1,9 @@
+import { isValidEmail } from "@/lib/utils";
+
+export function sendEmail(to: string, subject: string, body: string) {
+  if (!isValidEmail(to)) {
+    throw new Error("Invalid email format");
+  }
 interface GmailMessage {
   id: string;
   threadId: string;
