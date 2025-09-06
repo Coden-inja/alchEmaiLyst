@@ -217,29 +217,37 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Top Description Text */}
-        <div className="absolute bottom-12 right-2 w-full justify-end flex z-30">
-          <h2 className="text-white bg-blue-400/20 text-sm font-mono p-2 rounded-lg max-w-xl">
-            A three agent system for leveraging AI to summarise, compose, send emails. Also stay away from spam{" "}
-          </h2>
-        </div>
+{/* Combined Bottom Sections (Top Description + Bottom Banner) */}
+  <div className="absolute bottom-8 left-0 w-full z-30 px-4">
+    <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 justify-between">
+      {/* Top Description Text */}
+      <div className="order-1 md:order-2 w-full md:w-auto text-white bg-blue-400/30 p-3 rounded-lg max-w-xl text-center relative" style={{ bottom: '1rem' }}>
+        <p className="text-sm leading-relaxed">
+          A three-agent system to summarize, compose, and send emails. Stay away from spam with intelligent delivery optimization.
+        </p>
+      </div>
+      
+      {/* Bottom Banner */}
+      <div ref={bottomTextRef} className="order-2 md:order-1 w-full md:w-[60%] flex flex-col items-center md:items-start text-center md:text-left break-words">
+        <h2 className="text-2xl md:text-3xl leading-tight font-bold uppercase w-full">
+          Your antispam AI
+        </h2>
+        <p className="text-sm md:text-base mt-3 text-justify">
+          A cutting-edge platform powered by a{" "}
+          <span className="font-semibold">three-agent AI system</span> designed to intelligently{" "}
+          <span className="font-semibold">summarize, compose, and send emails</span> — while actively{" "}
+          <span className="font-semibold">avoiding spam triggers</span> to ensure maximum delivery and clarity.
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+
       </div>
 
-      {/* Bottom Banner */}
-      <div ref={bottomTextRef}
-        className="relative md:absolute md:bottom-4 md:left-2 w-full md:w-[60%] md:flex-row-reverse p-4 text-white flex flex-col items-center justify-center text-center break-words md:text-left">
-        <div className="order-1 md:order-2 ">
-          <h2 className="text-xl md:text-2xl leading-tight font-extrabold uppercase w-full">
-            Your antispam AI
-          </h2>
-          <p className="text-xs md:text-sm  mt-2">
-            A cutting-edge platform powered by a{" "}
-            <span className="font-bold">three-agent AI system</span> designed to intelligently{" "}
-            <span className="font-bold">summarize, compose, and send emails</span> — while actively{" "}
-            <span className="font-bold">avoiding spam triggers</span> to ensure maximum delivery and clarity.
-          </p>
-        </div>
-      </div>
+
+
     </div>
   );
 };
