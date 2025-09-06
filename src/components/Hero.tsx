@@ -2,11 +2,11 @@ import { useRef, useState, useEffect } from "react";
 import { navLinks } from "../../constants/index.ts";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { SplitText } from "gsap/SplitText"; 
+import { SplitText } from "gsap/SplitText";
 import { ArrowRight, Bot, Mail, PlayCircle, Shield } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle.tsx";
 
-gsap.registerPlugin(SplitText); 
+gsap.registerPlugin(SplitText);
 const Hero = () => {
   const navRef = useRef<HTMLUListElement | null>(null);
   const heroRef = useRef(null);
@@ -22,6 +22,16 @@ const Hero = () => {
       setCurrent((prev) => (prev + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
+  }, []);
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useGSAP(() => {
@@ -46,7 +56,11 @@ const Hero = () => {
   return (
     <div className="min-h-screen bg-universityBlue dark:bg-gray-900 font-sans relative overflow-hidden">
       {/* Navbar */}
-      <div className="absolute top-3 left-4 right-4 flex justify-between items-center z-50">
+
+      <div
+        className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-3 transition-all duration-300 ${isScrolled ? "bg-universityBlue/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg" : ""
+          }`}
+      >
         <h1 ref={heroRef} className="p-2 text-white relative group text-3xl xs:text-6xl lg:text-2xl font-extrabold rounded-sm cursor-pointer z-50">
           <a href="/">alchEmaiLyst</a>
           <span className="absolute left-2 bottom-1.5 w-0 h-[5px] bg-blue-600 transition-all duration-300 group-hover:w-40"></span>
@@ -84,14 +98,14 @@ const Hero = () => {
               </li>
             ))}
           </ul>
-          
+
           {/* Theme Toggle */}
           <div className="hidden lg:block">
             <ThemeToggle />
           </div>
 
-          <button 
-            className="block lg:hidden p-2" 
+          <button
+            className="block lg:hidden p-2"
             aria-label="Open Menu"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
@@ -100,8 +114,9 @@ const Hero = () => {
             </svg>
           </button>
         </div>
-        
+
         {/* Mobile Menu */}
+
  {isMobileMenuOpen && (
   <div className="lg:hidden absolute top-16 left-4 right-4 
                   bg-background/90 backdrop-blur-md 
@@ -143,13 +158,51 @@ const Hero = () => {
   </div>
 )}
 
+        {isMobileMenuOpen && (
+          <div className="lg:hidden absolute top-16 left-4 right-4 bg-black/90 backdrop-blur-md rounded-lg p-4 z-50">
+            <div className="flex flex-col space-y-4">
+              {navLinks.map((link) => (
+                link.url ? (
+                  <a
+                    key={link.id}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-white  hover:text-blue-300 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.title}
+                  </a>
+                ) : (
+                  <button
+                    key={link.id}
+                    className="!text-white hover:!text-blue-300 transition-colors bg-transparent border-none outline-none text-inherit cursor-pointer text-left"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      if (link.anchor) {
+                        const el = document.getElementById(link.anchor);
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                  >
+                    {link.title}
+                  </button>
+                )
+              ))}
+              <div className="pt-2 border-t border-gray-600">
+                <ThemeToggle />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
 
       {/* Hero Background */}
       <div
-          ref={clipImgRef}
-          className="w-full h-screen relative overflow-hidden rounded-lg"
-          >
+        ref={clipImgRef}
+        className="w-full h-screen relative overflow-hidden rounded-lg"
+      >
 
         <div className="absolute inset-0 bg-overlayBlack rounded-lg z-10" />
         {images.map((img, idx) => (
@@ -207,24 +260,28 @@ const Hero = () => {
         </div>
 
         {/* Top Description Text */}
-       
+        <div className="absolute bottom-12 right-2 w-full justify-end flex z-30">
+          <h2 className="text-white bg-blue-400/20 text-sm font-mono p-2 rounded-lg max-w-xl">
+            A three agent system for leveraging AI to summarise, compose, send emails. Also stay away from spam{" "}
+          </h2>
+        </div>
       </div>
 
       {/* Bottom Banner */}
-      <div ref={bottomTextRef} 
-      className="relative md:absolute md:bottom-4 md:left-2 w-full md:w-[60%] md:flex-row-reverse p-4 text-white flex flex-col items-center justify-center text-center break-words md:text-left">
+      <div ref={bottomTextRef}
+        className="relative md:absolute md:bottom-4 md:left-2 w-full md:w-[60%] md:flex-row-reverse p-4 text-white flex flex-col items-center justify-center text-center break-words md:text-left">
         <div className="order-1 md:order-2 ">
-        <h2 className="text-xl md:text-2xl leading-tight font-extrabold uppercase w-full">
-          Your antispam AI
-        </h2>
-        <p className="text-xs md:text-sm  mt-2">
-          A cutting-edge platform powered by a{" "}
-          <span className="font-bold">three-agent AI system</span> designed to intelligently{" "}
-          <span className="font-bold">summarize, compose, and send emails</span> — while actively{" "}
-          <span className="font-bold">avoiding spam triggers</span> to ensure maximum delivery and clarity.
-        </p>
+          <h2 className="text-xl md:text-2xl leading-tight font-extrabold uppercase w-full">
+            Your antispam AI
+          </h2>
+          <p className="text-xs md:text-sm  mt-2">
+            A cutting-edge platform powered by a{" "}
+            <span className="font-bold">three-agent AI system</span> designed to intelligently{" "}
+            <span className="font-bold">summarize, compose, and send emails</span> — while actively{" "}
+            <span className="font-bold">avoiding spam triggers</span> to ensure maximum delivery and clarity.
+          </p>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
