@@ -17,16 +17,34 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
         <Hero />
       </div>
 
-      {/* About Us Section */}
-      <div id="about-section" className="py-24 bg-gradient-to-b from-white to-blue-50 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-1000">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">About Us</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            <strong>alchEMaiLyst</strong> is an AI-powered platform designed to revolutionize your email workflow. Our mission is to help users save time, communicate more effectively, and keep their inboxes secure. With a unique three-agent system, we provide intelligent email summarization, professional email composition, and advanced spam detection—all in one seamless experience.<br /><br />
-            Built by a passionate team of developers and AI enthusiasts, alchEMaiLyst leverages the latest advancements in artificial intelligence to deliver a smarter, safer, and more productive email experience for everyone.
-          </p>
-        </div>
-      </div>
+ {/* About Us Section */}
+<div
+  id="about-section"
+  className="relative py-28 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-950 overflow-hidden"
+>
+  {/* Decorative floating shapes */}
+  <div className="absolute top-0 left-0 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+  <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
+
+  <div className="relative max-w-5xl mx-auto px-6 text-center">
+    {/* Gradient Heading with Highlight */}
+    <h2 className="text-5xl sm:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 mb-12 animate-pulse">
+      About <span className="text-white bg-clip-text bg-gradient-to-r from-yellow-400 to-red-500">Us</span>
+    </h2>
+
+    {/* Glassmorphism Card */}
+    <div className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-md shadow-2xl rounded-3xl p-10 sm:p-16 transform transition-transform hover:scale-105">
+      <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 mb-6 leading-relaxed">
+        <strong className="text-indigo-600 dark:text-indigo-400 font-semibold">alchEMaiLyst</strong> is an AI-powered platform that transforms your email workflow. Our mission is to save you time, help communicate more effectively, and secure your inbox effortlessly.
+      </p>
+      <p className="text-lg sm:text-xl text-gray-700 dark:text-gray-200 leading-relaxed">
+        Featuring a unique <span className="text-purple-500 font-semibold">three-agent system</span>, we offer intelligent email summarization, professional composition, and advanced spam detection—all seamlessly integrated. Built by passionate developers and AI enthusiasts, alchEMaiLyst harnesses cutting-edge AI to deliver a smarter, safer, and more productive email experience.
+      </p>
+    </div>
+  </div>
+</div>
+
+
 
 
       {/* Features Section */}
@@ -74,14 +92,15 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
         <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-blue-50 to-white dark:hidden rounded-t-xl z-10" />
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">How It Works</h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          <p className="text-lg text-gray-900 dark:text-white mb-8">
             Discover how alchEmaiLyst leverages AI to make your email workflow seamless and efficient.
           </p>
           <a
             href="https://x.com/Yoges_ai/status/1941754822501466365"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg mb-4"
+            className="inline-block px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:from-pink-500 hover:to-purple-500 transition-all transform hover:scale-105 shadow-lg mb-4"
+
           >
             Watch Demo
           </a>
@@ -235,4 +254,4 @@ export const Landing: React.FC<LandingProps> = ({ onGetStarted }) => {
       </div>
     </div>
   );
-};
+};     
