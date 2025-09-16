@@ -67,7 +67,7 @@ const Hero = () => {
         </h1>
 
         <div className="flex items-center space-x-4">
-          <ul ref={navRef} className="hidden lg:flex gap-12 text-lg text-white z-40">
+          <ul ref={navRef} className="hidden lg:flex gap-12 text-lg text-foreground z-40">
             {navLinks.map((link) => (
               <li key={link.id} className="relative group cursor-pointer">
                 {link.url ? (
@@ -116,6 +116,48 @@ const Hero = () => {
         </div>
 
         {/* Mobile Menu */}
+
+ {isMobileMenuOpen && (
+  <div className="lg:hidden absolute top-16 left-4 right-4 
+                  bg-background/90 backdrop-blur-md 
+                  rounded-lg p-4 z-50 border border-border">
+    <div className="flex flex-col space-y-4">
+      {navLinks.map((link) =>
+        link.url ? (
+          <a
+            key={link.id}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-foreground hover:text-accent transition-colors"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {link.title}
+          </a>
+        ) : (
+          <button
+            key={link.id}
+            className="text-foreground hover:text-accent transition-colors 
+                       bg-transparent border-none outline-none cursor-pointer text-left"
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              if (link.anchor) {
+                const el = document.getElementById(link.anchor);
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }
+            }}
+          >
+            {link.title}
+          </button>
+        )
+      )}
+      <div className="pt-2 border-t border-border">
+        <ThemeToggle />
+      </div>
+    </div>
+  </div>
+)}
+
         {isMobileMenuOpen && (
           <div className="lg:hidden absolute top-16 left-4 right-4 bg-black/90 backdrop-blur-md rounded-lg p-4 z-50">
             <div className="flex flex-col space-y-4">
